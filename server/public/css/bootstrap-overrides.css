@@ -1,3 +1,8 @@
 .bg-primary {
   background-color: #006400 !important;
 }
+.avatar {
+  position: relative;
+  width: 100%;
+  height: auto;
+}

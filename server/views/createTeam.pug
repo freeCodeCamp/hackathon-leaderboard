@@ -37,10 +37,6 @@ html(lang='en')
             label(for='team-site') Site URL
             input#team-site.form-control(type='url', aria-describedby='team-site-help', placeholder='', required=true)
             small#team-name-help.form-text.text-muted The URL of your site, useually provided by netlify.
-          .form-group
-            label(for='team-collab') Team Collaborators
-            input#team-collab.form-control(type='text', aria-describedby='team-collab-help', placeholder='')
-            small#team-collab-help.form-text.text-muted A comma separated list of Github usernames
           .form-check
             input#isOnLine.form-check-input(type='checkbox', value='')
             label.form-check-label(for='isOnLine')
@@ -69,11 +65,10 @@ html(lang='en')
         var teamName = createTeamForm.querySelector('#team-name').value;
         var teamRepo = createTeamForm.querySelector('#team-repo').value;
         var teamSite = createTeamForm.querySelector('#team-site').value;
-        var teamCollaborators = createTeamForm.querySelector('#team-collab').value;
         var teamIsOnline = createTeamForm.querySelector('#isOnLine').checked;
         var team = {
           name: teamName,
-          collaborators: teamCollaborators.split(',').map(function(str) { return str.trim(); }).filter(Boolean),
+          collaborators: [],
           githubRepository: teamRepo,
           siteUrl: teamSite,
           isOnlineHackathon: teamIsOnline

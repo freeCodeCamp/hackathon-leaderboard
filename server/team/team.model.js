@@ -1,16 +1,23 @@
 const mongoose = require('mongoose');
+
+const userModel = require('../user/user.schema');
 /**
  * Team Schema
  */
+const LighthouseSchema = new mongoose.Schema({
+  seo: Number,
+  'best-practices': Number,
+  accessibility: Number,
+  pwa: Number,
+  performance: Number
+});
+
 const TeamSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
   },
-  collaborators: {
-    type: [String],
-    required: true
-  },
+  collaborators: [userModel],
   githubRepository: {
     type: String,
     required: true
@@ -20,7 +27,8 @@ const TeamSchema = new mongoose.Schema({
   },
   isOnlineHackathon: {
     type: Boolean
-  }
+  },
+  lighthouse: [LighthouseSchema]
 });
 
 /**

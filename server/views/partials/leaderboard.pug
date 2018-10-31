@@ -1,0 +1,10 @@
+table(cellspacing="0px", width="100%", style="width: 100%;table-layout: fixed;overflow:hidden;")
+  tr
+    td(v-for='(key, j) in Object.keys(teams[0])', v-if="['_id', '__v'].indexOf(key) === -1" v-text='key')
+  tr(v-for='(team, i) in teams')
+    td(v-for='(key, j) in Object.keys(team)', v-if="['_id', '__v'].indexOf(key) === -1")
+      p(v-if="key !== 'collaborators'", v-text="team[key]")
+      ol(v-if="key === 'collaborators'")
+        li(v-for="(member, k) in team[key]")
+          p.h4(v-text="member.username")
+          img.avatar(:src="member.avatar")
