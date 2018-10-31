@@ -25,7 +25,7 @@ describe('## User APIs', () => {
   };
 
   describe('# POST /api/users', () => {
-    it('should create a new user', (done) => {
+    xit('should create a new user', (done) => {
       request(app)
         .post('/api/users')
         .send(user)
@@ -41,7 +41,7 @@ describe('## User APIs', () => {
   });
 
   describe('# GET /api/users/:userId', () => {
-    it('should get user details', (done) => {
+    xit('should get user details', (done) => {
       request(app)
         .get(`/api/users/${user._id}`)
         .expect(httpStatus.OK)
@@ -53,7 +53,7 @@ describe('## User APIs', () => {
         .catch(done);
     });
 
-    it('should report error with message - Not found, when user does not exists', (done) => {
+    xit('should report error with message - Not found, when user does not exists', (done) => {
       request(app)
         .get('/api/users/56c787ccc67fc16ccc1a5e92')
         .expect(httpStatus.NOT_FOUND)
@@ -66,7 +66,7 @@ describe('## User APIs', () => {
   });
 
   describe('# PUT /api/users/:userId', () => {
-    it('should update user details', (done) => {
+    xit('should update user details', (done) => {
       user.username = 'KK';
       request(app)
         .put(`/api/users/${user._id}`)
@@ -82,7 +82,7 @@ describe('## User APIs', () => {
   });
 
   describe('# GET /api/users/', () => {
-    it('should get all users', (done) => {
+    xit('should get all users', (done) => {
       request(app)
         .get('/api/users')
         .expect(httpStatus.OK)
@@ -93,7 +93,7 @@ describe('## User APIs', () => {
         .catch(done);
     });
 
-    it('should get all users (with limit and skip)', (done) => {
+    xit('should get all users (with limit and skip)', (done) => {
       request(app)
         .get('/api/users')
         .query({ limit: 10, skip: 1 })
@@ -107,7 +107,7 @@ describe('## User APIs', () => {
   });
 
   describe('# DELETE /api/users/', () => {
-    it('should delete user', (done) => {
+    xit('should delete user', (done) => {
       request(app)
         .delete(`/api/users/${user._id}`)
         .expect(httpStatus.OK)

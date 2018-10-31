@@ -1,6 +1,10 @@
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
 const httpStatus = require('http-status');
+const debug = require('debug');
+
+const log = debug('fcc:user:model');
+
 const APIError = require('../helpers/APIError');
 
 /**
@@ -11,10 +15,17 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  mobileNumber: {
-    type: String,
-    required: true,
-    match: [/^[1-9][0-9]{9}$/, 'The value of path {PATH} ({VALUE}) is not a valid mobile number.']
+  email: {
+    type: String
+  },
+  githubId: {
+    type: String
+  },
+  avatar: {
+    type: String
+  },
+  githubProfile: {
+    type: String
   },
   createdAt: {
     type: Date,
@@ -32,16 +43,53 @@ const UserSchema = new mongoose.Schema({
 /**
  * Methods
  */
-UserSchema.method({
-});
+UserSchema.method({});
 
 /**
  * Statics
  */
 UserSchema.statics = {
   /**
+   * find or create a user
+   * @param {Object} githubUser - Selected properties returned from GitHub
+   * @param {Function} cb - the callback function
+   * @returns {Promise<User, APIError>}
+   */
+  findOrCreate(githubUser, cb) {
+    log('findOrCrerate ', githubUser);
+    const { githubId } = githubUser;
+    this.findOne({ githubId })
+      .exec()
+      .then((user) => {
+        if (user) {
+          log('existing user');
+          log(user);
+          // this user already exists, return it
+          return cb(null, user);
+        }
+        // no user found for this githubId, create one
+        return this.create(githubUser).then((newUser) => {
+          if (newUser) {
+            log('new user');
+            log(newUser);
+            // user created, return it
+            return cb(null, newUser);
+          }
+          log('@'.repeat(10));
+          log('no user found or created');
+          log('@'.repeat(10));
+          // no user created, throw it
+          const err = new APIError('Unable to create a user', httpStatus.INTERNAL_SERVER_ERROR);
+          return cb(err, null);
+        });
+      })
+      .catch(err => cb(err, null));
+  },
+
+  /**
    * Get user
    * @param {ObjectId} id - The objectId of user.
+   * @param {Function} cb - The callback function
    * @returns {Promise<User, APIError>}
    */
   get(id) {
