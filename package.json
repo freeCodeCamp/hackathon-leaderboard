@@ -11,8 +11,9 @@
     "yarn": ">=1.5.1"
   },
   "scripts": {
+    "develop": "nodemon --exec npm run start:debug",
     "start": "node index.js",
-    "start:debug": "cross-env DEBUG=express-mongoose-es6-rest-api:* yarn start",
+    "start:debug": "cross-env DEBUG=fcc:* yarn start",
     "lint": "esw *.js server config --color",
     "lint:watch": "yarn lint -- --watch",
     "precommit": "yarn lint && yarn test",
@@ -41,14 +42,16 @@
   ],
   "dependencies": {
     "bluebird": "3.5.1",
-    "body-parser": "1.18.2",
+    "body-parser": "false1.18.3",
     "compression": "1.7.2",
+    "connect-mongo": "false2.0.1",
     "cookie-parser": "1.4.3",
     "cors": "2.8.4",
     "debug": "^2.4.5",
     "dotenv": "^4.0.0",
     "express": "4.16.3",
     "express-jwt": "5.3.1",
+    "express-session": "false1.15.6",
     "express-validation": "1.0.2",
     "express-winston": "2.5.0",
     "helmet": "3.12.0",
@@ -58,6 +61,9 @@
     "method-override": "^2.3.10",
     "mongoose": "4.7.4",
     "morgan": "1.9.0",
+    "passport": "false0.4.0",
+    "passport-github": "false1.1.0",
+    "pug": "false2.0.3",
     "winston": "2.4.1"
   },
   "devDependencies": {
@@ -73,6 +79,7 @@
     "husky": "0.14.3",
     "istanbul": "1.1.0-alpha.1",
     "mocha": "3.5.0",
+    "nodemon": "^1.18.5",
     "supertest": "3.0.0",
     "supertest-as-promised": "4.0.2",
     "validate-commit-msg": "^2.14.0"

@@ -8,21 +8,24 @@ const envVarsSchema = Joi.object({
   NODE_ENV: Joi.string()
     .allow(['development', 'production', 'test', 'provision'])
     .default('development'),
-  PORT: Joi.number()
-    .default(4040),
-  MONGOOSE_DEBUG: Joi.boolean()
-    .when('NODE_ENV', {
-      is: Joi.string().equal('development'),
-      then: Joi.boolean().default(true),
-      otherwise: Joi.boolean().default(false)
-    }),
-  JWT_SECRET: Joi.string().required()
+  PORT: Joi.number().default(4040),
+  MONGOOSE_DEBUG: Joi.boolean().when('NODE_ENV', {
+    is: Joi.string().equal('development'),
+    then: Joi.boolean().default(true),
+    otherwise: Joi.boolean().default(false)
+  }),
+  COOKIE_SECRET: Joi.string().required(),
+  JWT_SECRET: Joi.string()
+    .required()
     .description('JWT Secret required to sign'),
-  MONGO_HOST: Joi.string().required()
+  MONGO_HOST: Joi.string()
+    .required()
     .description('Mongo DB host url'),
-  MONGO_PORT: Joi.number()
-    .default(27017)
-}).unknown()
+  MONGO_PORT: Joi.number().default(27017),
+  GITHUB_CLIENT_ID: Joi.string().required(),
+  GITHUB_CLIENT_SECRET: Joi.string().required()
+})
+  .unknown()
   .required();
 
 const { error, value: envVars } = Joi.validate(process.env, envVarsSchema);
@@ -35,9 +38,14 @@ const config = {
   port: envVars.PORT,
   mongooseDebug: envVars.MONGOOSE_DEBUG,
   jwtSecret: envVars.JWT_SECRET,
+  cookieSecret: envVars.COOKIE_SECRET,
   mongo: {
     host: envVars.MONGO_HOST,
     port: envVars.MONGO_PORT
+  },
+  github: {
+    id: envVars.GITHUB_CLIENT_ID,
+    secret: envVars.GITHUB_CLIENT_SECRET
   }
 };
 
