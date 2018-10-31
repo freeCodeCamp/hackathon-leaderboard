@@ -11,6 +11,7 @@ const expressWinston = require('express-winston');
 const expressValidation = require('express-validation');
 const helmet = require('helmet');
 const session = require('express-session');
+const debug = require('debug');
 
 const winstonInstance = require('./winston');
 const routes = require('../index.route');
@@ -18,6 +19,11 @@ const config = require('./config');
 const passport = require('./passport');
 const { setViewEngine } = require('./viewEngine');
 const APIError = require('../server/helpers/APIError');
+const { ifNoUserRedirect } = require('../server/middlewares/user');
+
+const Team = require('../server/team/team.model');
+
+const log = debug('fcc:express');
 
 const app = express();
 
@@ -73,6 +79,15 @@ app.get('/', (req, res) => {
 });
 
 app.get('/signout', (req, res) => res.redirect('/api/auth/signout'));
+
+app.get('/team', ifNoUserRedirect(), async (req, res) => {
+  if (req.user.teamId) {
+    const team = await Team.findById(req.user.teamId);
+    log(team);
+    return res.render('manageTeam', { team });
+  }
+  return res.render('createTeam');
+});
 
 // mount all routes on /api path
 app.use('/api', routes);

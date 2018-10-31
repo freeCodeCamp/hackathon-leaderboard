@@ -5,7 +5,7 @@ html(lang='en')
     // Navigation
     nav#mainNav.navbar.navbar-expand-lg.bg-secondary.fixed-top.text-uppercase
       .container
-        a.navbar-brand(href='#page-top') Start Bootstrap
+        a.navbar-brand.js-scroll-trigger(href='#page-top') Start Bootstrap
         button.navbar-toggler.navbar-toggler-right.text-uppercase.bg-primary.text-white.rounded(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
           | Menu
           i.fas.fa-bars
@@ -18,7 +18,7 @@ html(lang='en')
     // Header
     header.jumbotron.bg-primary.text-white.text-center
       .container
-        h2.font-weight-light.mb-0 Welcome to the JAMstack Hackathon 2018
+        h2.font-weight-light.mb-0 Create a team for the JAMstack Hackathon 2018
     main
       .container
-        h1 Hello #{username}!
+        h1 Manage #{team.name}!
