@@ -6,13 +6,7 @@ const teamCtrl = require('./team.contoller');
 const router = express.Router(); // eslint-disable-line new-cap
 
 const multer = require('multer');
-/*
-const bodyParser = require('body-parser');
 
-const parseForm = bodyParser.urlencoded({ extended: false });
-const parseJSONBody = bodyParser.json();
-const parseBody = [parseJSONBody, parseForm];
-*/
 const upload = multer();
 
 router
