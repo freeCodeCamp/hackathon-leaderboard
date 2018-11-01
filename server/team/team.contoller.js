@@ -7,9 +7,7 @@ const launchChromeAndRunLighthouse = require('../lighthouse/lighthouse');
 const log = debug('fcc:team:controller');
 
 function create(req, res) {
-  const { body: team } = req;
-  log(team);
-  Team.create(team)
+  Team.create(req.body)
     .then((newTeam) => {
       if (!newTeam) {
         return res.status(500).json({ acknowladged: false });
@@ -22,11 +20,17 @@ function create(req, res) {
           $push: {
             collaborators: req.user
           }
+        },
+        {
+          new: true,
+          multi: false
         }
       )
       .then((teamUpdate) => {
-        res.status(200).json({ acknowladged: true });
-        return teamUpdate._id;
+        log(teamUpdate);
+        return res.render('home', {
+          teams: [teamUpdate]
+        });
       });
     })
     .then(teamId => User.update({ _id: req.user._id }, { teamId }));

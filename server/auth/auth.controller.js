@@ -1,4 +1,7 @@
 function handlePassportLogin(req, res) {
+  /* eslint-disable no-param-reassign */
+  req.session.userId = req.user._id;
+  /* eslint-enable no-param-reassign */
   return res.redirect('/');
 }
 

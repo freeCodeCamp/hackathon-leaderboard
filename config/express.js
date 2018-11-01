@@ -8,7 +8,7 @@ const methodOverride = require('method-override');
 const cors = require('cors');
 const helmet = require('helmet');
 const session = require('express-session');
-
+// const mongoose = require('mongoose');
 const provideRoutes = require('../index.route');
 const config = require('./config');
 const passport = require('./passport');
@@ -30,7 +30,24 @@ app.use(methodOverride());
 app.use(express.static(publicPath));
 app.use(helmet());
 app.use(cors());
-app.use(session({ secret: config.cookieSecret, resave: true, saveUninitialized: true }));
+/* const store = new MongoDBStore({
+  mongooseConnection: mongoose.connection,
+  uri: 'mongodb://localhost/session_hackathon',
+  collection: 'mySessions'
+});
+
+store.on('error', (error) => {
+  log(error);
+}); */
+
+app.use(
+  session({
+    secret: config.cookieSecret,
+    resave: true,
+    saveUninitialized: true
+  /* , store*/
+  }
+));
 app.use(passport.initialize());
 app.use(passport.session());
 

@@ -10,7 +10,11 @@ nav#mainNav.navbar.navbar-expand-lg.bg-secondary.fixed-top.text-uppercase
         li.nav-item.mx-0.mx-lg-1
           a.nav-link.py-3.px-0.px-lg-3.rounded(href=`/team`) Team
         li.nav-item.mx-0.mx-lg-1
-          a.nav-link.py-3.px-0.px-lg-3.rounded(href=`/signout`) Signout
+          if (!session || !session.userId)
+            a.nav-link.py-3.px-0.px-lg-3.rounded(href= `/api/auth/github/callback`) Signin
+          else
+            a.nav-link.py-3.px-0.px-lg-3.rounded(href= `/signout`) Signout
+            
 // Header
 header.jumbotron.bg-primary.text-white.text-center
   .container
