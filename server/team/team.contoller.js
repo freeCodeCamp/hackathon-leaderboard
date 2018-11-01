@@ -7,7 +7,9 @@ const launchChromeAndRunLighthouse = require('../lighthouse/lighthouse');
 const log = debug('fcc:team:controller');
 
 function create(req, res) {
-  Team.create(req.body)
+  const body = req.body;
+  body.collaborators = [];
+  Team.create(body)
     .then((newTeam) => {
       if (!newTeam) {
         return res.status(500).json({ acknowladged: false });
