@@ -1,23 +1,43 @@
 const express = require('express');
+
+const config = require('./config/config');
 const userRoutes = require('./server/user/user.route');
 const authRoutes = require('./server/auth/auth.route');
 const teamRoutes = require('./server/team/team.route');
+const { ifNoUserRedirect } = require('./server/middlewares/user');
 
+const Team = require('./server/team/team.model');
+
+const api = express.Router(); // eslint-disable-line new-cap
 const router = express.Router(); // eslint-disable-line new-cap
 
-// TODO: use glob to match *.route files
+api.get('/health-check', (req, res) => res.send('OK'));
+api.use('/users', userRoutes);
+api.use('/auth', authRoutes);
+api.use('/teams', teamRoutes);
 
-/** GET /health-check - Check service health */
-router.get('/health-check', (req, res) =>
-  res.send('OK')
-);
+router.get('/', (req, res) => {
+  if (req.user) {
+    const { username } = req.user;
+    return res.render('welcome', { username });
+  }
+  return res.render('home', { githubClientId: config.github.id });
+});
 
-// mount user routes at /users
-router.use('/users', userRoutes);
+router.get('/signout', (req, res) => res.redirect('/api/auth/signout'));
 
-// mount auth routes at /auth
-router.use('/auth', authRoutes);
+router.get('/team', ifNoUserRedirect(), async (req, res) => {
+  if (req.user.teamId) {
+    const team = await Team.findById(req.user.teamId);
+    return res.render('manageTeam', { team });
+  }
+  return res.render('createTeam');
+});
 
-router.use('/teams', teamRoutes);
+function provideRoutes(app) {
+  app.use('/api', api);
+  app.use(router);
+  return;
+}
 
-module.exports = router;
+module.exports = provideRoutes;
