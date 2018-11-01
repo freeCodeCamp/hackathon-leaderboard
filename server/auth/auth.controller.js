@@ -3,8 +3,11 @@ function handlePassportLogin(req, res) {
 }
 
 function handleSignout(req, res) {
+  if (req.session) {
+    req.session.destroy();
+  }
   req.logout();
-  res.redirect('/');
+  return res.redirect('/');
 }
 /**
  * This is a protected route. Will return random number only if jwt token is provided in header.

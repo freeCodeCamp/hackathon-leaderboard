@@ -32,6 +32,22 @@ function create(req, res) {
     .then(teamId => User.update({ _id: req.user._id }, { teamId }));
 }
 
+function join(req, res) {
+  Team.findOneAndUpdate(
+    { _id: req.body.team },
+    { $push: { collaborators: req.user } },
+    { safe: true, new: true, multi: false }
+  )
+  .then((team) => {
+    log(team);
+    return res.redirect(`/user/${req.user._id}`);
+  });
+}
+
+function joinForm(req, res) {
+  return res.render('joinTeam');
+}
+
 function analyze(req, res) {
   Team.find({})
   .sort()
@@ -93,4 +109,4 @@ function list(req, res) {
     });
   });
 }
-module.exports = { create, list, analyze };
+module.exports = { create, list, analyze, join, joinForm };

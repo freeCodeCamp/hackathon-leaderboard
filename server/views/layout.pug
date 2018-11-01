@@ -1,0 +1,28 @@
+doctype html
+html(lang='en')
+  include partials/head.pug
+  body#page-top
+    block header
+    #vue
+      block content
+    script(type="text/javascript").
+      new Vue({
+        el: '#vue',
+        data: function data() { return { teams: this.parseArr(!{JSON.stringify(teams)}) } } ,
+        mounted: function() {
+          this.log();
+        },
+        methods: {
+          parseObj: function(obj){
+            if (!obj) return ''
+            return obj
+          },
+          parseArr: function(arr){
+            if (!arr) return ['']
+            return arr;
+          },
+          log: function() {
+            console.log(Object.keys(this.teams[0]))
+          }
+        } 
+      })

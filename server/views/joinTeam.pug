@@ -1,0 +1,21 @@
+extends layout
+block header
+block content
+  div
+    include partials/nav.pug
+    main
+      .container#flash-container
+
+      .container
+        h1 Want to create a new team?
+          a.btn.btn-primary(href=`/team`)
+        h1 Go Team!
+
+        form#create-team-form(method="POST", action=`/api/teams/join`)
+          .form-group
+            label(for="selectGroup") Select a team
+
+            select.form-control#selectGroup(name="team", required)
+              option(disabled, value= "") Groups
+              option(v-for="(team, i) in teams", :value="team._id", v-text="team.name")
+            button.btn.btn-primary(type='submit') Submit
