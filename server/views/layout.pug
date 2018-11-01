@@ -9,7 +9,11 @@ html(lang='en')
     script(type="text/javascript").
       new Vue({
         el: '#vue',
-        data: function data() { return { teams: this.parseArr(!{JSON.stringify(teams)}) } } ,
+        data: function data() { return { 
+            teams: this.parseArr(!{JSON.stringify(teams)}),
+            checked: false
+          } 
+        },
         mounted: function() {
           this.log();
         },

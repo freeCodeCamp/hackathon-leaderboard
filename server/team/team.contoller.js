@@ -7,73 +7,74 @@ const launchChromeAndRunLighthouse = require('../lighthouse/lighthouse');
 const log = debug('fcc:team:controller');
 
 function create(req, res) {
-  const body = req.body;
-  return Team.create(body)
-    .then((newTeam) => {
-      if (!newTeam) {
-        return res.status(500).json({ acknowladged: false });
-      }
-      return res.status(200).json(newTeam);
-    })
-    .then(teamId => User.update({ _id: req.user._id }, { teamId }));
-}
-
-function join(req, res) {
-  Team.findOneAndUpdate(
-    { _id: req.body.team },
-    { $push: { collaborators: req.user } },
-    { safe: true, new: true, multi: false }
-  )
-  .then((team) => {
-    log(team);
-    return res.redirect(`/user/${req.user._id}`);
+  const { body: team } = req;
+  const collaborators = team.collaborators.split(',').map(str => str.trim())
+    .filter(Boolean);
+  team.collaborators = collaborators;
+  const newTeam = new Team(team);
+  return newTeam.save()
+  .then(() => {
+    if (!newTeam) {
+      return res.status(500).json({ acknowladged: false });
+    }
+    return User.findOneAndUpdate(
+      { _id: req.user._id },
+      { $set: { teamId: newTeam._id } }
+    )
+    .then((user) => {
+      res.redirect(`/api/teams/${user.teamId}`);
+    });
   });
 }
-/* updates lighthouse scores for all teams.
-TODO parameterize and update selected */
+
+function update(req, res) {
+  const { body: team } = req;
+  const collaborators = team.collaborators.split(',').map(str => str.trim())
+    .filter(Boolean);
+  team.collaborators = collaborators;
+  Team.findOneAndUpdate(
+    { _id: req.params._id },
+    { $set: team },
+    { safe: true, new: true, multi: false }
+  )
+  .then((newTeam) => {
+    log(newTeam);
+    res.redirect(`/api/teams/${newTeam._id}`);
+  });
+}
+/* updates lighthouse scores for a team */
 function analyze(req, res) {
-  Team.find({})
-  .sort()
-  .lean()
-  .then((teams) => {
-    if (teams.length === 0) {
+  return Team.findOne({ _id: req.params._id })
+  .then((team) => {
+    if (!team) {
       return res.redirect('/team');
     }
-    async function updateLeaderboard() {
+    async function updateTeamScore() {
       await new Promise((resolve, reject) => {
-        teams.forEach((team) => {
-          launchChromeAndRunLighthouse(team.siteUrl).then((results) => {
-            Team.findOneAndUpdate(
-              { _id: team._id },
-              {
-                $push: { lighthouse: results }
-              },
-              {
-                new: true,
-                multi: false
-              }
-            )
-            .then((result) => {
-              log(result);
-            })
-            .catch((err) => {
-              if (err) {
-                reject(err);
-              }
-            });
+        launchChromeAndRunLighthouse(team.siteUrl).then((results) => {
+          Team.findOneAndUpdate(
+            { _id: team._id },
+            {
+              $push: { lighthouse: results }
+            },
+            {
+              new: true,
+              multi: false
+            }
+          )
+          .then((newTeam) => {
+            res.status(200).json(newTeam);
+            resolve();
+          })
+          .catch((err) => {
+            if (err) {
+              reject(err);
+            }
           });
         });
-        resolve();
       });
     }
-    updateLeaderboard();
-    return Team.find({})
-    .sort()
-    .lean()
-    .then((newteams) => {
-      log(newteams);
-      return res.status(200).json(newteams);
-    });
+    return updateTeamScore();
   });
 }
 
@@ -88,4 +89,22 @@ function list(req, res) {
     return res.status(200).json(teams);
   });
 }
-module.exports = { create, list, analyze, join };
+
+function single(req, res) {
+  return Team.findOne(
+    { _id: req.params.teamId }
+  )
+  .then((team) => {
+    if (!team) {
+      return res.redirect('/team');
+    }
+    return res.status(200).json(team);
+  });
+}
+
+function deleteTeam(req, res) {
+  return Team.remove({ _id: req.params._id })
+  .then(team => res.status(200).json(`deleted team ${team.name}`));
+}
+
+module.exports = { create, update, list, analyze, single, deleteTeam };

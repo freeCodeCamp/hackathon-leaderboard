@@ -8,24 +8,26 @@ block content
       .container#flash-container
 
       .container
-        h1 Want to join an existing team?
-          a.btn.btn-primary(href=`/api/teams/join`) Click here
         h1 Go Team!
 
-        form#create-team-form(enctype="multipart/form-data", method="POST", action="/api/teams")
+        form#create-team-form(enctype='multipart/form-data', method='POST', action='/api/teams')
           .form-group
             label(for='team-name') Team Name
-            input#team-name.form-control(type='text', aria-describedby='team-name-help', placeholder='' required=true, name="name")
+            input#team-name.form-control(type='text', aria-describedby='team-name-help', placeholder='' required=true, name='name')
             small#team-name-help.form-text.text-muted Your team name.
           .form-group
             label(for='team-repo') GitHub Repository
-            input#team-repo.form-control(type='url', placeholder='', required=true, name="githubRepository")
+            input#team-repo.form-control(type='url', placeholder='', required=true, name='githubRepository')
           .form-group
             label(for='team-site') Site URL
-            input#team-site.form-control(type='url', aria-describedby='team-site-help', placeholder='', required=true, name="siteUrl")
+            input#team-site.form-control(type='url', aria-describedby='team-site-help', placeholder='', required=true, name='siteUrl')
             small#team-name-help.form-text.text-muted The URL of your site, useually provided by netlify.
+          .form-group
+            label(for='team-collab') Team Collaborators
+            input#team-collab.form-control(type='text', aria-describedby='team-collab-help', placeholder='', name='collaborators')
+            small#team-collab-help.form-text.text-muted A comma separated list of Github usernames
           .form-check
-            input#isOnLine.form-check-input(type='checkbox', value='', name="isOnlineHackathon")
+            input#isOnLine.form-check-input(type='checkbox', v-model='checked', name='isOnlineHackathon')
             label.form-check-label(for='isOnLine')
               | Online only team
 

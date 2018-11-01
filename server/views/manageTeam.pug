@@ -7,3 +7,26 @@ block content
       .container
         h1 Manage #{team.name}!
       .container
+        
+        form#create-team-form(enctype='multipart/form-data', method='POST', action='/api/teams')
+          .form-group
+            label(for='team-name') Team Name
+            input#team-name.form-control(type='text', aria-describedby='team-name-help', placeholder= team.name, value= team.name, required=true, name='name')
+            small#team-name-help.form-text.text-muted Your team name.
+          .form-group
+            label(for='team-repo') GitHub Repository
+            input#team-repo.form-control(type='url', placeholder= team.githubRepository, value= team.githubRepository, required=true, name='githubRepository')
+          .form-group
+            label(for='team-site') Site URL
+            input#team-site.form-control(type='url', aria-describedby='team-site-help', placeholder= team.siteUrl, value= team.siteUrl, required=true, name='siteUrl')
+            small#team-name-help.form-text.text-muted The URL of your site, useually provided by netlify.
+          .form-group
+            label(for='team-collab') Team Collaborators
+            input#team-collab.form-control(type='text', aria-describedby='team-collab-help', placeholder= team.collaborators.join(', '), value= team.collaborators.join(', '), name='collaborators')
+            small#team-collab-help.form-text.text-muted A comma separated list of Github usernames
+          .form-check
+            input#isOnLine.form-check-input(type='checkbox', value= (team.isOnlineHackathon ? true : false), name='isOnlineHackathon', checked= (team.isOnlineHackathon ? 'true' : 'false') )
+            label.form-check-label(for='isOnLine')
+              | Online only team
+
+          button.btn.btn-primary(type='submit') Submit

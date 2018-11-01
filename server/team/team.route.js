@@ -6,12 +6,13 @@ const teamCtrl = require('./team.contoller');
 const router = express.Router(); // eslint-disable-line new-cap
 
 const multer = require('multer');
+/*
 const bodyParser = require('body-parser');
 
 const parseForm = bodyParser.urlencoded({ extended: false });
 const parseJSONBody = bodyParser.json();
 const parseBody = [parseJSONBody, parseForm];
-
+*/
 const upload = multer();
 
 router
@@ -19,14 +20,19 @@ router
   /** GET /api/teams - Get list of users */
   .get(teamCtrl.list)
   /** POST /api/teams - Create new team */
-  .post(ifNoUserRedirect(), upload.array(), parseBody, teamCtrl.create);
+  .post(ifNoUserRedirect(), upload.array(), teamCtrl.create);
 
 router
-  .route('/analyze')
-  .post(teamCtrl.analyze);
+  .route('/:teamId')
+  .get(teamCtrl.single)
+  .post(teamCtrl.update);
 
 router
-  .route('/join')
-  .post(ifNoUserRedirect(), teamCtrl.join);
+  .route('/analyze/:teamId')
+  .post(ifNoUserRedirect(), upload.array(), teamCtrl.analyze);
+
+router
+  .route('/delete/:teamId')
+  .delete(teamCtrl.deleteTeam);
 
 module.exports = router;
