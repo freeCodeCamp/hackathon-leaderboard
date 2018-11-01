@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-
-const userModel = require('../user/user.schema');
 /**
  * Team Schema
  */
@@ -17,7 +15,10 @@ const TeamSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  collaborators: [userModel],
+  collaborators: {
+    type: [String],
+    required: true
+  },
   githubRepository: {
     type: String,
     required: true

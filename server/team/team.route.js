@@ -23,11 +23,10 @@ router
 
 router
   .route('/analyze')
-  .get(teamCtrl.analyze);
+  .post(teamCtrl.analyze);
 
 router
   .route('/join')
-  .get(teamCtrl.joinForm)
   .post(ifNoUserRedirect(), teamCtrl.join);
 
 module.exports = router;

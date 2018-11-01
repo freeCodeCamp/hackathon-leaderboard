@@ -8,32 +8,12 @@ const log = debug('fcc:team:controller');
 
 function create(req, res) {
   const body = req.body;
-  body.collaborators = [];
-  Team.create(body)
+  return Team.create(body)
     .then((newTeam) => {
       if (!newTeam) {
         return res.status(500).json({ acknowladged: false });
       }
-      return Team.findOneAndUpdate(
-        {
-          _id: newTeam._id
-        },
-        {
-          $push: {
-            collaborators: req.user
-          }
-        },
-        {
-          new: true,
-          multi: false
-        }
-      )
-      .then((teamUpdate) => {
-        log(teamUpdate);
-        return res.render('home', {
-          teams: [teamUpdate]
-        });
-      });
+      return res.status(200).json(newTeam);
     })
     .then(teamId => User.update({ _id: req.user._id }, { teamId }));
 }
@@ -49,11 +29,8 @@ function join(req, res) {
     return res.redirect(`/user/${req.user._id}`);
   });
 }
-
-function joinForm(req, res) {
-  return res.render('joinTeam');
-}
-
+/* updates lighthouse scores for all teams.
+TODO parameterize and update selected */
 function analyze(req, res) {
   Team.find({})
   .sort()
@@ -95,9 +72,7 @@ function analyze(req, res) {
     .lean()
     .then((newteams) => {
       log(newteams);
-      return res.render('home', {
-        teams: newteams
-      });
+      return res.status(200).json(newteams);
     });
   });
 }
@@ -110,9 +85,7 @@ function list(req, res) {
     if (teams.length === 0) {
       return res.render('createTeam');
     }
-    return res.render('home', {
-      teams
-    });
+    return res.status(200).json(teams);
   });
 }
-module.exports = { create, list, analyze, join, joinForm };
+module.exports = { create, list, analyze, join };
