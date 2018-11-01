@@ -102,7 +102,7 @@ function list(req, res) {
   .lean()
   .then((teams) => {
     if (teams.length === 0) {
-      return res.redirect('/team');
+      return res.render('createTeam');
     }
     return res.render('home', {
       teams

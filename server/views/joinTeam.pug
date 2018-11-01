@@ -8,10 +8,10 @@ block content
 
       .container
         h1 Want to create a new team?
-          a.btn.btn-primary(href=`/team`)
+          a.btn.btn-primary(href=`/team`) Click here
         h1 Go Team!
 
-        form#create-team-form(method="POST", action=`/api/teams/join`)
+        form#join-team-form(method="POST", action=`/api/teams/join`)
           .form-group
             label(for="selectGroup") Select a team
 
