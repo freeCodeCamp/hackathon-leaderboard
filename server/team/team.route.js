@@ -12,7 +12,7 @@ const router = express.Router(); // eslint-disable-line new-cap
 function deleteValidator(req, res, next) {
   return User.findOne({ _id: req.user._id })
   .then((user) => {
-    if (user.teamId !== user._id) {
+    if (user.teamId !== req.params.teamId) {
       return next(new Error('Unauthorized'));
     }
     return next();
