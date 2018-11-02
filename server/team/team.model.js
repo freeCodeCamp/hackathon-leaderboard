@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
  * Team Schema
  */
 const LighthouseSchema = new mongoose.Schema({
+  date: Date,
   seo: Number,
   'best-practices': Number,
   accessibility: Number,

@@ -16,6 +16,7 @@ html(lang='en')
         },
         mounted: function() {
           this.log();
+          this.getTeams();
         },
         methods: {
           parseObj: function(obj){
@@ -25,6 +26,14 @@ html(lang='en')
           parseArr: function(arr){
             if (!arr) return ['']
             return arr;
+          },
+          getTeams() {
+            const self = this;
+            axios.get('/api/teams')
+            .then((res) => {
+              console.log(res);
+              self.data = res;
+            })
           },
           log: function() {
             console.log(Object.keys(this.teams[0]))

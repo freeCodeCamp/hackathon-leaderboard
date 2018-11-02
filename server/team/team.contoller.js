@@ -21,8 +21,8 @@ function create(req, res) {
       { _id: req.user._id },
       { $set: { teamId: newTeam._id } }
     )
-    .then((user) => {
-      res.redirect(`/api/teams/${user.teamId}`);
+    .then(() => {
+      res.redirect('/team');
     });
   });
 }
@@ -33,18 +33,18 @@ function update(req, res) {
     .filter(Boolean);
   team.collaborators = collaborators;
   Team.findOneAndUpdate(
-    { _id: req.params._id },
+    { _id: req.params.teamId },
     { $set: team },
     { safe: true, new: true, multi: false }
   )
   .then((newTeam) => {
     log(newTeam);
-    res.redirect(`/api/teams/${newTeam._id}`);
+    res.redirect('/team');
   });
 }
 /* updates lighthouse scores for a team */
 function analyze(req, res) {
-  return Team.findOne({ _id: req.params._id })
+  return Team.findOne({ _id: req.params.teamId })
   .then((team) => {
     if (!team) {
       return res.redirect('/team');
@@ -52,10 +52,12 @@ function analyze(req, res) {
     async function updateTeamScore() {
       await new Promise((resolve, reject) => {
         launchChromeAndRunLighthouse(team.siteUrl).then((results) => {
+          const resultsAddDate = results;
+          resultsAddDate.date = new Date();
           Team.findOneAndUpdate(
             { _id: team._id },
             {
-              $push: { lighthouse: results }
+              $push: { lighthouse: resultsAddDate }
             },
             {
               new: true,
@@ -103,7 +105,7 @@ function single(req, res) {
 }
 
 function deleteTeam(req, res) {
-  return Team.remove({ _id: req.params._id })
+  return Team.remove({ _id: req.params.teamId })
   .then(team => res.status(200).json(`deleted team ${team.name}`));
 }
 

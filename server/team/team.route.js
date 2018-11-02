@@ -12,7 +12,7 @@ const upload = multer();
 router
   .route('/')
   /** GET /api/teams - Get list of users */
-  .get(teamCtrl.list)
+  // .get(teamCtrl.list)
   /** POST /api/teams - Create new team */
   .post(ifNoUserRedirect(), upload.array(), teamCtrl.create);
 
