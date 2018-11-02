@@ -9,7 +9,7 @@ block content
       .container
         h1 Go Team!
         #team-form-or-webhook
-          form#create-team-form
+          form#create-team-form(v-on:submit='handleFormSubmit')
             .form-group
               label(for='team-name') Team Name
               input#team-name.form-control(type='text', aria-describedby='team-name-help', placeholder='' required=true)
@@ -30,4 +30,4 @@ block content
               label.form-check-label(for='isOnLine')
                 | Online only team
 
-            button.btn.btn-primary(v-on:click="handleFormSubmit", type='submit') Submit
+            button.btn.btn-primary(type='submit') Submit

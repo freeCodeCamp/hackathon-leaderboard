@@ -41,8 +41,8 @@ app.use(helmet());
 app.use(cors());
 app.use(session({
   secret: config.cookieSecret,
-  resave: true,
-  saveUninitialized: true,
+  resave: false,
+  saveUninitialized: false,
   store,
   cookie: { maxAge: 180 * 60 * 1000 }
 }));

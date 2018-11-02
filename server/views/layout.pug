@@ -5,13 +5,15 @@ html(lang='en')
     block header
     #vue
       block content
-      p #{session}
     include partials/scripts.pug
     script(type="text/javascript").
       new Vue({
         el: '#vue',
         data: function data() { return { 
             teams: this.parseArr(!{JSON.stringify(teams)}),
+            createTeamForm: document.getElementById('create-team-form'),
+            flashContainer: document.getElementById('flash-container'),
+            actionContainer: document.getElementById('team-form-or-webhook'),
             checked: false
           } 
         },
@@ -38,9 +40,22 @@ html(lang='en')
               self.teams = res.data;
             })
           },
+          createFlash(type, message) {
+            var flashContainer = document.getElementById('flash-container');
+
+            var alert = document.createElement("DIV");
+            alert.classList.add('alert', 'alert-' + type);
+            alert.role = 'alert';
+            alert.innerHTML = message;
+            flashContainer.appendChild(alert);
+            return null;
+          },
           handleFormSubmit(e) {
             var self = this;
             e.preventDefault();
+            var createTeamForm = document.getElementById('create-team-form');
+            var flashContainer = document.getElementById('flash-container');
+            var actionContainer = document.getElementById('team-form-or-webhook');
             var teamName = createTeamForm.querySelector('#team-name').value;
             var teamRepo = createTeamForm.querySelector('#team-repo').value;
             var teamSite = createTeamForm.querySelector('#team-site').value;
@@ -74,11 +89,10 @@ html(lang='en')
             })
           },
           renderWebhooks(webhooks) {
+            var self = this;
             var createTeamForm = document.getElementById('create-team-form');
             var flashContainer = document.getElementById('flash-container');
             var actionContainer = document.getElementById('team-form-or-webhook');
-            
-            var self = this;
             var webhookPanel = document.createElement('DIV');
             var header = document.createElement('H2')
             var panelBody = document.createElement('DIV');
