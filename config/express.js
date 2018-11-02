@@ -29,7 +29,7 @@ const store = new MongoDBStore({
   collection: 'mySessions'
 });
 store.on('error', (error) => {
-  console.log(error);
+  logger(error);
 });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

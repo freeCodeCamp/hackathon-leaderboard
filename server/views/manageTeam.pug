@@ -28,5 +28,9 @@ block content
             input#isOnLine.form-check-input(type='checkbox', value= (team.isOnlineHackathon ? true : false), name='isOnlineHackathon', checked= (team.isOnlineHackathon ? 'true' : 'false') )
             label.form-check-label(for='isOnLine')
               | Online only team
-
-          button.btn.btn-primary(type='submit') Submit
+          .row
+            .col
+              button.btn.btn-primary(type='submit') Submit
+            .col
+              a.btn.btn-danger(role="button", v-on:click="removeTeam") Remove Team
+              small.form-text.danger Warning: Team removal cannot be undone.

@@ -11,6 +11,7 @@ html(lang='en')
         el: '#vue',
         data: function data() { return { 
             teams: this.parseArr(!{JSON.stringify(teams)}),
+            team: this.parseObj(!{JSON.stringify(team)}),
             checked: false
           } 
         },
@@ -127,7 +128,15 @@ html(lang='en')
               '</div>' +
             '</div>';
           },
-          
+          removeTeam() {
+            var self = this;
+            if (self.team && self.team !== '') {
+              axios.delete(`/api/teams/delete/${self.team._id}`)
+              .then((res) => {
+                console.log(res)
+              })
+            }
+          },
           log: function() {
             console.log(Object.keys(this.teams[0]))
           }

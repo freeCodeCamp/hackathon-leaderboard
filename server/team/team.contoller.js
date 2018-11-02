@@ -116,7 +116,6 @@ function list(req, res) {
       if (teams.length === 0) {
         return res.status(200).json(['']);
       }
-      console.log(teams);
       return res.status(200).json(teams);
     });
 }
@@ -131,10 +130,13 @@ function single(req, res) {
 }
 
 function deleteTeam(req, res) {
-  return Team.remove({ _id: req.params.teamId }).then((team) => {
-    User.update({ teamId: team._id }, { $set: { teamId: null } })
+  return Team.remove({ _id: req.params.teamId }).then(() => {
+    User.update({ teamId: req.params.teamId }, { $set: { teamId: null } })
     .then(() => {
-      res.status(200).json(`deleted team ${team.name}`);
+      Webhook.remove({ belongsTo: req.params.teamId })
+      .then(() => {
+        res.status(200).json('deleted team');
+      });
     });
   });
 }
