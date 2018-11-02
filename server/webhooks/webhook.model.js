@@ -8,7 +8,7 @@ const WebhookSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  hook: {
+  webhook: {
     type: String,
     required: true
   },

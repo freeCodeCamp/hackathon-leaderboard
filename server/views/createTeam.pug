@@ -5,7 +5,7 @@ html(lang='en')
     // Navigation
     nav#mainNav.navbar.navbar-custom.navbar-expand-md.fixed-top.text-uppercase
       .container
-        a.navbar-brand.js-scroll-trigger(href='#page-top') 
+        a.navbar-brand.js-scroll-trigger(href='#page-top')
           img.img-responsive(src='https://s3.amazonaws.com/freecodecamp/freecodecamp_logo.svg', alt='learn to code javascript at freeCodeCamp logo')
         button.navbar-toggler.navbar-toggler-right.text-uppercase.rounded(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
           | Menu
@@ -25,36 +25,36 @@ html(lang='en')
 
       .container
         h1 Go Team!
+        #team-form-or-webhook
+          form#create-team-form
+            .form-group
+              label(for='team-name') Team Name
+              input#team-name.form-control(type='text', aria-describedby='team-name-help', placeholder='' required=true)
+              small#team-name-help.form-text.text-muted Your team name.
+            .form-group
+              label(for='team-repo') GitHub Repository
+              input#team-repo.form-control(type='url', placeholder='', required=true)
+            .form-group
+              label(for='team-site') Site URL
+              input#team-site.form-control(type='url', aria-describedby='team-site-help', placeholder='', required=true)
+              small#team-name-help.form-text.text-muted The URL of your site, usually provided by Netlify.
+            .form-group
+              label(for='team-collab') Team Collaborators
+              input#team-collab.form-control(type='text', aria-describedby='team-collab-help', placeholder='')
+              small#team-collab-help.form-text.text-muted A comma separated list of Github usernames.
+            .form-check
+              input#isOnLine.form-check-input(type='checkbox', value='')
+              label.form-check-label(for='isOnLine')
+                | Online only team
 
-        form#create-team-form
-          .form-group
-            label(for='team-name') Team Name
-            input#team-name.form-control(type='text', aria-describedby='team-name-help', placeholder='' required=true)
-            small#team-name-help.form-text.text-muted Your team name.
-          .form-group
-            label(for='team-repo') GitHub Repository
-            input#team-repo.form-control(type='url', placeholder='', required=true)
-          .form-group
-            label(for='team-site') Site URL
-            input#team-site.form-control(type='url', aria-describedby='team-site-help', placeholder='', required=true)
-            small#team-name-help.form-text.text-muted The URL of your site, usually provided by Netlify.
-          .form-group
-            label(for='team-collab') Team Collaborators
-            input#team-collab.form-control(type='text', aria-describedby='team-collab-help', placeholder='')
-            small#team-collab-help.form-text.text-muted A comma separated list of Github usernames.
-          .form-check
-            input#isOnLine.form-check-input(type='checkbox', value='')
-            label.form-check-label(for='isOnLine')
-              | Online only team
-
-          button.btn.btn-primary(type='submit') Submit
+            button.btn.btn-primary(type='submit') Submit
 
     script(src='https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js')
     script(src='https://unpkg.com/axios/dist/axios.min.js')
     script.
       var createTeamForm = document.getElementById('create-team-form');
       var flashContainer = document.getElementById('flash-container');
-      var reloadTimeout = null;
+      var actionContainer = document.getElementById('team-form-or-webhook');
 
       function createFlash(type, message) {
         var alert = document.createElement("DIV");
@@ -82,21 +82,67 @@ html(lang='en')
         return axios.post('/api/teams', team).then(function(response) {
          var status = response.status;
           if (parseInt(status, 10) === 200) {
-            reloadTimeout = setTimeout(function() { window.location.reload()}, 5000);
-            return createFlash('success', 'Your team has been created!<br><br>GO ' + teamName + '!<br><br>This page will reload in five seconds.');
+            createFlash('success', 'Your team has been created!<br><br>Please make note of your webhooks below');
+            return response.data.webhooks;
           } else {
             return createFlash('warning', 'Something went wrong creating your team')
           }
-        }).catch(function(error) {
+        })
+        .then(function(webhooks) {
+          if (!webhooks) {
+            return createFlash('danger', 'The API did not send any webhooks back')
+          }
+          return renderWebhooks(webhooks)
+        })
+        .catch(function(error) {
           console.error(error);
           return createFlash('danger', 'Something went wrong creating your team, more info in the console')
         })
       }
+
+      function renderWebhooks(webhooks) {
+
+        var webhookPanel = document.createElement('DIV');
+        var header = document.createElement('H2')
+        var panelBody = document.createElement('DIV');
+        var githubWebhook = document.createElement('DIV');
+        var netlifyWebhook = document.createElement('DIV');
+
+        githubWebhook.innerHTML = buildWebhookDisplay(webhooks.github);
+        netlifyWebhook.innerHTML =  buildWebhookDisplay(webhooks.netlify);
+        webhookPanel.classList.add('card','border-success', 'mb-3','container');
+        header.classList.add('card-header');
+        header.innerText = 'Your Sites Webhooks';
+        panelBody.classList.add('card-body');
+
+        webhookPanel.appendChild(header);
+        panelBody.appendChild(githubWebhook);
+        panelBody.appendChild(netlifyWebhook);
+        webhookPanel.appendChild(panelBody);
+
+        return actionContainer.replaceChild(webhookPanel, createTeamForm);
+      }
+
+      function buildWebhookDisplay(webhook) {
+        var secretId = webhook.name + '-secret';
+        var urlId = webhook.name + '-url';
+        return '<div class="row"><div class="col"><h5 class="card-title">' + webhook.name + '</h5></div></div>'+
+        '<div class="row">' +
+          '<div class="col webhook-container">'+
+            '<label for="' + urlId + '">URL</label>' +
+            '<input id="' + urlId + '" type="url" readonly="" value="'+ webhook.webhook + '" />'+
+          '</div>' +
+        '</div><br /><hr /><br />'+
+        '<div class="row">'+
+          '<div class="col webhook-container">'+
+            '<label for="'+secretId + '">Secret</label>' +
+            '<input id="' + secretId + '" type="text" readonly="" value="'+ webhook.secret+'" />'+
+          '</div>' +
+        '</div>';
+      }
+
       createTeamForm.addEventListener('submit', handleFormSubmit);
       window.onbeforeunload = function(event) {
         createTeamForm.removeEventListener('submit', handleFormSubmit);
-        if (reloadTimeout) {
-          clearTimeout(reloadTimeout)
-        }
         return null;
       };

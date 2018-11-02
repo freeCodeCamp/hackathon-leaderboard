@@ -15,7 +15,7 @@ function generateKeys() {
 
 function generateWebhook(provider) {
   const { id, secret } = generateKeys();
-  return { hook: `${host}/api/webhook/${provider}/${id}`, secret, name: provider };
+  return { webhook: `${host}/api/webhook/${provider}/${id}`, id, secret, name: provider };
 }
 
 function createWebhooks() {
@@ -38,32 +38,12 @@ function createRelationships(userId, teamId, webhooks) {
 
 function create(req, res, next) {
   const { body: team } = req;
-  console.log(`
-
-
-
-
-
-
-
-
-
-
-  ${team}
-
-
-
-
-
-
-
-
-
-    `)
-  const collaborators = team.collaborators
-    .split(',')
-    .map(str => str.trim())
-    .filter(Boolean);
+  const collaborators = Array.isArray(team.collaborators)
+    ? team.collaborators
+    : team.collaborators
+        .split(',')
+        .map(str => str.trim())
+        .filter(Boolean);
   const webhooks = createWebhooks();
   return Team.create({ ...team, collaborators })
     .then((newTeam) => {
@@ -71,13 +51,10 @@ function create(req, res, next) {
         res.status(500).json({ acknowledged: false });
         return null;
       }
-      console.log(webhooks)
-      res.render('viewWebhooks',{
-        webhooks
-      });
-      return newTeam._id;
+      return createRelationships(req.user._id, newTeam._id, webhooks).then(() =>
+        res.json({ acknowledged: true, webhooks })
+      );
     })
-    .then(teamId => (teamId ? createRelationships(req.user._id, teamId, webhooks) : null))
     .catch(next);
 }
 
