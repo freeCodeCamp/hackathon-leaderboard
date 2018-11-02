@@ -11,9 +11,6 @@ html(lang='en')
         el: '#vue',
         data: function data() { return { 
             teams: this.parseArr(!{JSON.stringify(teams)}),
-            createTeamForm: document.getElementById('create-team-form'),
-            flashContainer: document.getElementById('flash-container'),
-            actionContainer: document.getElementById('team-form-or-webhook'),
             checked: false
           } 
         },
