@@ -8,6 +8,8 @@ const methodOverride = require('method-override');
 const cors = require('cors');
 const helmet = require('helmet');
 const session = require('express-session');
+const mongoose = require('mongoose');
+const MongoDBStore = require('connect-mongo')(session);
 
 const provideRoutes = require('../index.route');
 const config = require('./config');
@@ -22,6 +24,13 @@ if (config.env === 'development') {
   app.use(logger('dev'));
 }
 
+const store = new MongoDBStore({
+  mongooseConnection: mongoose.connection,
+  collection: 'mySessions'
+});
+store.on('error', (error) => {
+  console.log(error);
+});
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser(config.cookieSecret));
@@ -31,11 +40,19 @@ app.use(express.static(publicPath));
 app.use(helmet());
 app.use(cors());
 app.use(session({
-  secret: config.cookieSecret, resave: true, saveUninitialized: true }));
-  // /* , store, cookie: { maxAge: 180 * 60 * 1000 } */
+  secret: config.cookieSecret,
+  resave: true,
+  saveUninitialized: true,
+  store,
+  cookie: { maxAge: 180 * 60 * 1000 }
+}));
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use((req, res, next) => {
+  // eslint-disable-next-line no-param-reassign
+  res.locals.session = req.session;
+  next();
+});
 setViewEngine(app);
 provideRoutes(app);
 provideErrorMiddleware(app);

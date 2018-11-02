@@ -69,9 +69,7 @@ function update(req, res) {
     { _id: req.params.teamId },
     { $set: team },
     { safe: true, new: true, multi: false }
-  ).then(() => {
-    res.redirect('/team');
-  });
+  ).then(() => res.json({ acknowledged: true }));
 }
 /* updates lighthouse scores for a team */
 function analyze(req, res) {
@@ -116,8 +114,9 @@ function list(req, res) {
     .lean()
     .then((teams) => {
       if (teams.length === 0) {
-        return res.redirect('/team');
+        return res.status(200).json(['']);
       }
+      console.log(teams);
       return res.status(200).json(teams);
     });
 }
@@ -125,7 +124,7 @@ function list(req, res) {
 function single(req, res) {
   return Team.findOne({ _id: req.params.teamId }).then((team) => {
     if (!team) {
-      return res.redirect('/team');
+      return res.status(200).json(['']);
     }
     return res.status(200).json(team);
   });
