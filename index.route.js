@@ -4,6 +4,7 @@ const config = require('./config/config');
 const userRoutes = require('./server/user/user.route');
 const authRoutes = require('./server/auth/auth.route');
 const teamRoutes = require('./server/team/team.route');
+const webhookRoutes = require('./server/webhooks/webhook.route');
 const { ifNoUserRedirect } = require('./server/middlewares/user');
 
 const Team = require('./server/team/team.model');
@@ -15,6 +16,7 @@ api.get('/health-check', (req, res) => res.send('OK'));
 api.use('/users', userRoutes);
 api.use('/auth', authRoutes);
 api.use('/teams', teamRoutes);
+api.use('/webhook', webhookRoutes);
 
 router.get('/', (req, res) => {
   if (req.user) {
