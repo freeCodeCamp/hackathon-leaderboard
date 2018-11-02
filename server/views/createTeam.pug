@@ -1,101 +1,35 @@
-doctype html
-html(lang='en')
-  include partials/head.pug
-  body#page-top
-    // Navigation
-    nav#mainNav.navbar.navbar-expand-lg.bg-secondary.fixed-top.text-uppercase
-      .container
-        a.navbar-brand.js-scroll-trigger(href='#page-top') Start Bootstrap
-        button.navbar-toggler.navbar-toggler-right.text-uppercase.bg-primary.text-white.rounded(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
-          | Menu
-          i.fas.fa-bars
-        #navbarResponsive.collapse.navbar-collapse
-          ul.navbar-nav.ml-auto
-            li.nav-item.mx-0.mx-lg-1
-              a.nav-link.py-3.px-0.px-lg-3.rounded(href=`/team`) Team
-            li.nav-item.mx-0.mx-lg-1
-              a.nav-link.py-3.px-0.px-lg-3.rounded(href=`/signout`) Signout
-    // Header
-    header.jumbotron.bg-primary.text-white.text-center
-      .container
-        h2.font-weight-light.mb-0 Create a team for the JAMstack Hackathon 2018
+extends layout
+block header
+block content
+  div
+    include partials/nav.pug
+
     main
       .container#flash-container
 
       .container
         h1 Go Team!
 
-        form#create-team-form
+        form#create-team-form(enctype='multipart/form-data', method='POST', action='/api/teams')
           .form-group
             label(for='team-name') Team Name
-            input#team-name.form-control(type='text', aria-describedby='team-name-help', placeholder='' required=true)
+            input#team-name.form-control(type='text', aria-describedby='team-name-help', placeholder='' required=true, name='name')
             small#team-name-help.form-text.text-muted Your team name.
           .form-group
             label(for='team-repo') GitHub Repository
-            input#team-repo.form-control(type='url', placeholder='', required=true)
+            input#team-repo.form-control(type='url', placeholder='', required=true, name='githubRepository')
           .form-group
             label(for='team-site') Site URL
-            input#team-site.form-control(type='url', aria-describedby='team-site-help', placeholder='', required=true)
+            input#team-site.form-control(type='url', aria-describedby='team-site-help', placeholder='', required=true, name='siteUrl')
             small#team-name-help.form-text.text-muted The URL of your site, useually provided by netlify.
           .form-group
             label(for='team-collab') Team Collaborators
-            input#team-collab.form-control(type='text', aria-describedby='team-collab-help', placeholder='')
+            input#team-collab.form-control(type='text', aria-describedby='team-collab-help', placeholder='', name='collaborators')
             small#team-collab-help.form-text.text-muted A comma separated list of Github usernames
           .form-check
-            input#isOnLine.form-check-input(type='checkbox', value='')
+            input#isOnLine.form-check-input(type='checkbox', v-model='checked', name='isOnlineHackathon')
             label.form-check-label(for='isOnLine')
               | Online only team
 
           button.btn.btn-primary(type='submit') Submit
 
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js')
-    script(src='https://unpkg.com/axios/dist/axios.min.js')
-    script.
-      var createTeamForm = document.getElementById('create-team-form');
-      var flashContainer = document.getElementById('flash-container');
-      var reloadTimeout = null;
-
-      function createFlash(type, message) {
-        var alert = document.createElement("DIV");
-        alert.classList.add('alert', 'alert-' + type);
-        alert.role = 'alert';
-        alert.innerHTML = message;
-        flashContainer.appendChild(alert);
-        return null;
-      }
-
-      function handleFormSubmit(e) {
-        e.preventDefault();
-        var teamName = createTeamForm.querySelector('#team-name').value;
-        var teamRepo = createTeamForm.querySelector('#team-repo').value;
-        var teamSite = createTeamForm.querySelector('#team-site').value;
-        var teamCollaborators = createTeamForm.querySelector('#team-collab').value;
-        var teamIsOnline = createTeamForm.querySelector('#isOnLine').checked;
-        var team = {
-          name: teamName,
-          collaborators: teamCollaborators.split(',').map(function(str) { return str.trim(); }).filter(Boolean),
-          githubRepository: teamRepo,
-          siteUrl: teamSite,
-          isOnlineHackathon: teamIsOnline
-        }
-        return axios.post('/api/teams', team).then(function(response) {
-         var status = response.status;
-          if (parseInt(status, 10) === 200) {
-            reloadTimeout = setTimeout(function() { window.location.reload()}, 5000);
-            return createFlash('success', 'Your team has been created!<br><br>GO ' + teamName + '!<br><br>This page will reload in five seconds.');
-          } else {
-            return createFlash('warning', 'Something went wrong creating your team')
-          }
-        }).catch(function(error) {
-          console.error(error);
-          return createFlash('danger', 'Something went wrong creating your team, more info in the console')
-        })
-      }
-      createTeamForm.addEventListener('submit', handleFormSubmit);
-      window.onbeforeunload = function(event) {
-        createTeamForm.removeEventListener('submit', handleFormSubmit);
-        if (reloadTimeout) {
-          clearTimeout(reloadTimeout)
-        }
-        return null;
-      };
