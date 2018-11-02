@@ -2,15 +2,6 @@ const mongoose = require('mongoose');
 /**
  * Team Schema
  */
-const LighthouseSchema = new mongoose.Schema({
-  date: Date,
-  seo: Number,
-  'best-practices': Number,
-  accessibility: Number,
-  pwa: Number,
-  performance: Number
-});
-
 const TeamSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -29,8 +20,7 @@ const TeamSchema = new mongoose.Schema({
   },
   isOnlineHackathon: {
     type: Boolean
-  },
-  lighthouse: [LighthouseSchema]
+  }
 });
 
 /**
