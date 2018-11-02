@@ -1,16 +1,27 @@
-table.table(cellspacing="0px", width="100%", style="width: 100%;table-layout: fixed;overflow:hidden;")
+table.table(cellspacing="0px", width="100%", style="width: 100%;overflow:hidden;")
   thead
     
     tr
       th(scope="row", v-text="'rank'")
-      th(v-for='(key, j) in Object.keys(teams[0])', v-if="['_id', '__v'].indexOf(key) === -1" v-text='key', scope="col")
+      th Team Name
+      th Repo
+      th Site
+      th Online-only
+      th Lighthouse
+      th Collaborators
+      // th(v-for='(key, j) in Object.keys(teams[0])', v-if="['_id', '__v'].indexOf(key) === -1" v-text='key', scope="col")
   tbody
     
     tr(v-for='(team, i) in teams')
-      th(scope="row", v-text="i")
+      th(scope="row", v-text="i + 1")
       td(v-for='(key, j) in Object.keys(team)', v-if="['_id', '__v'].indexOf(key) === -1")
-        p(v-if="key !== 'collaborators'", v-text="team[key]")
-        ol(v-if="key === 'collaborators'")
-          li(v-for="(member, k) in team[key]")
-            p.h4(v-text="member")
-            img.avatar(:src="`https://github.com/${member}.png`")
+        span(v-if="!Array.isArray(team[key])")
+          a(v-if="key === 'githubRepository'", v-bind:href="team[key]", v-text="team[key].split('https://github.com/')[1]")
+          a(v-else-if="key === 'siteUrl'", v-bind:href="team[key]", v-text="team[key]")
+          span(v-else-if="key === 'isOnlineHackathon'", v-text="!team[key] ? 'no' : 'yes'")
+          a(v-else, v-text="team[key]")
+        ol(v-else-if="key === 'collaborators'")
+          li.avatar(v-for="(member, k) in team[key]")
+            img(:src="`https://github.com/${member}.png`", :title="member")
+        
+        

@@ -4,7 +4,12 @@
   flex-direction: column;
 }
 .avatar {
+  display: inline-block;
   position: relative;
-  width: 100%;
+  margin: 0 3px;
+}
+.avatar img {
+  position: relative;
+  width: 40px;
   height: auto;
 }
