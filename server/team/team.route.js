@@ -2,22 +2,11 @@ const express = require('express');
 const validate = require('express-validation');
 
 const { ifNoUserRedirect } = require('../middlewares/user');
-const { ifNoBody400 } = require('../middlewares/util');
+const { ifNoBody400, ifNotOwnTeam400 } = require('../middlewares/util');
 const teamCtrl = require('./team.contoller');
 const validators = require('./team.validation');
-const User = require('../user/user.model');
 
 const router = express.Router(); // eslint-disable-line new-cap
-
-function deleteValidator(req, res, next) {
-  return User.findOne({ _id: req.user._id })
-  .then((user) => {
-    if (user.teamId !== req.params.teamId) {
-      return next(new Error('Unauthorized'));
-    }
-    return next();
-  });
-}
 
 router
   .route('/')
@@ -29,10 +18,10 @@ router
 router
   .route('/:teamId')
   .get(teamCtrl.single)
-  .post(ifNoUserRedirect(), validate(validators.createTeam), teamCtrl.update);
+  .post(ifNoUserRedirect(), ifNoBody400, validate(validators.createTeam), teamCtrl.update);
 
 router
   .route('/delete/:teamId')
-  .delete(ifNoUserRedirect(), deleteValidator, teamCtrl.deleteTeam);
+  .delete(ifNoUserRedirect(), ifNotOwnTeam400, teamCtrl.deleteTeam);
 
 module.exports = router;
