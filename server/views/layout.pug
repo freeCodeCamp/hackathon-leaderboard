@@ -5,7 +5,7 @@ html(lang='en')
     block header
     #vue
       block content
-    include partials/script.pug
+    include partials/scripts.pug
     script(type="text/javascript").
       new Vue({
         el: '#vue',
@@ -15,8 +15,10 @@ html(lang='en')
           } 
         },
         mounted: function() {
-          this.log();
-          this.getTeams();
+          var self = this;
+          self.log();
+          self.getTeams();
+          
         },
         methods: {
           parseObj: function(obj){
@@ -35,6 +37,85 @@ html(lang='en')
               self.teams = res.data;
             })
           },
+          handleFormSubmit(e) {
+            var self = this;
+            e.preventDefault();
+            var teamName = createTeamForm.querySelector('#team-name').value;
+            var teamRepo = createTeamForm.querySelector('#team-repo').value;
+            var teamSite = createTeamForm.querySelector('#team-site').value;
+            var teamCollaborators = createTeamForm.querySelector('#team-collab').value;
+            var teamIsOnline = createTeamForm.querySelector('#isOnLine').checked;
+            var team = {
+              name: teamName,
+              collaborators: teamCollaborators.split(',').map(function(str) { return str.trim(); }).filter(Boolean),
+              githubRepository: teamRepo,
+              siteUrl: teamSite,
+              isOnlineHackathon: teamIsOnline
+            }
+            return axios.post('/api/teams', team).then(function(response) {
+             var status = response.status;
+              if (parseInt(status, 10) === 200) {
+                self.createFlash('success', 'Your team has been created!<br><br>Please make note of your webhooks below');
+                return response.data.webhooks;
+              } else {
+                return self.createFlash('warning', 'Something went wrong creating your team')
+              }
+            })
+            .then(function(webhooks) {
+              if (!webhooks) {
+                return self.createFlash('danger', 'The API did not send any webhooks back')
+              }
+              return self.renderWebhooks(webhooks)
+            })
+            .catch(function(error) {
+              console.error(error);
+              return self.createFlash('danger', 'Something went wrong creating your team, more info in the console')
+            })
+          },
+          renderWebhooks(webhooks) {
+            var createTeamForm = document.getElementById('create-team-form');
+            var flashContainer = document.getElementById('flash-container');
+            var actionContainer = document.getElementById('team-form-or-webhook');
+            
+            var self = this;
+            var webhookPanel = document.createElement('DIV');
+            var header = document.createElement('H2')
+            var panelBody = document.createElement('DIV');
+            var githubWebhook = document.createElement('DIV');
+            var netlifyWebhook = document.createElement('DIV');
+
+            githubWebhook.innerHTML = self.buildWebhookDisplay(webhooks.github);
+            netlifyWebhook.innerHTML =  self.buildWebhookDisplay(webhooks.netlify);
+            webhookPanel.classList.add('card','border-success', 'mb-3','container');
+            header.classList.add('card-header');
+            header.innerText = 'Your Sites Webhooks';
+            panelBody.classList.add('card-body');
+
+            webhookPanel.appendChild(header);
+            panelBody.appendChild(githubWebhook);
+            panelBody.appendChild(netlifyWebhook);
+            webhookPanel.appendChild(panelBody);
+
+            return actionContainer.replaceChild(webhookPanel, createTeamForm);
+          },
+          buildWebhookDisplay(webhook) {
+            var secretId = webhook.name + '-secret';
+            var urlId = webhook.name + '-url';
+            return '<div class="row"><div class="col"><h5 class="card-title">' + webhook.name + '</h5></div></div>'+
+            '<div class="row">' +
+              '<div class="col webhook-container">'+
+                '<label for="' + urlId + '">URL</label>' +
+                '<input id="' + urlId + '" type="url" readonly="" value="'+ webhook.webhook + '" />'+
+              '</div>' +
+            '</div><br /><hr /><br />'+
+            '<div class="row">'+
+              '<div class="col webhook-container">'+
+                '<label for="'+secretId + '">Secret</label>' +
+                '<input id="' + secretId + '" type="text" readonly="" value="'+ webhook.secret+'" />'+
+              '</div>' +
+            '</div>';
+          },
+          
           log: function() {
             console.log(Object.keys(this.teams[0]))
           }

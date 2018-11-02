@@ -2,10 +2,7 @@ extends layout
 block header
 block content
   div
-    include partials/navigation.pug
-
-        a.navbar-brand.js-scroll-trigger(href='#page-top')
-        button.navbar-toggler.navbar-toggler-right.text-uppercase.rounded(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+    include partials/nav.pug
     main
       .container#flash-container
 
@@ -33,10 +30,10 @@ block content
               label.form-check-label(for='isOnLine')
                 | Online only team
 
-            button.btn.btn-primary(type='submit') Submit
+            button.btn.btn-primary(v-on:click="handleFormSubmit", type='submit') Submit
 
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js')
-    script(src='https://unpkg.com/axios/dist/axios.min.js')
+    
+    //  script(src='https://unpkg.com/axios/dist/axios.min.js')
     script.
       var createTeamForm = document.getElementById('create-team-form');
       var flashContainer = document.getElementById('flash-container');
@@ -51,6 +48,7 @@ block content
         return null;
       }
 
+      
       function handleFormSubmit(e) {
         e.preventDefault();
         var teamName = createTeamForm.querySelector('#team-name').value;

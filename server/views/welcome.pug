@@ -2,8 +2,7 @@ extends layout
 block header
 block content
   div
-    include partials/navigation.pug
-        button.navbar-toggler.navbar-toggler-right.text-uppercase.rounded(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+    include partials/nav.pug
     main
       .container
         h1 Hello #{username}!

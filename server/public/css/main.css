@@ -3,3 +3,8 @@
   justify-content: flex-start;
   flex-direction: column;
 }
+.avatar {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
