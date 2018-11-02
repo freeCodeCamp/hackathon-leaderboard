@@ -1,3 +1,37 @@
-.bg-primary {
+body {
+  padding-top: 3.5rem;
+}
+
+.navbar-custom {
   background-color: #006400 !important;
+}
+
+.navbar-custom button {
+  color: rgba(255,255,255,.9);
+}
+
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+  color: rgba(255,255,255,.9);
+}
+/* change the link color */
+.navbar-custom .navbar-nav .nav-link {
+  color: rgba(255,255,255,.9);
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+  color: #ffffff;
+}
+
+.navbar-light .nav-item.active .nav-link,
+.navbar-light .nav-item:focus .nav-link,
+.navbar-light .nav-item:hover .nav-link {
+  color: #ffffff;
+}
+
+.img-responsive {
+  max-width: 70%;
+  max-height: 70%;
 }
