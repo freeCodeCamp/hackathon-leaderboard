@@ -30,7 +30,9 @@ app.use(methodOverride());
 app.use(express.static(publicPath));
 app.use(helmet());
 app.use(cors());
-app.use(session({ secret: config.cookieSecret, resave: true, saveUninitialized: true }));
+app.use(session({
+  secret: config.cookieSecret, resave: true, saveUninitialized: true }));
+  // /* , store, cookie: { maxAge: 180 * 60 * 1000 } */
 app.use(passport.initialize());
 app.use(passport.session());
 

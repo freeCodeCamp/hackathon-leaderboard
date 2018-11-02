@@ -8,6 +8,10 @@ const validators = require('./team.validation');
 
 const router = express.Router(); // eslint-disable-line new-cap
 
+// const multer = require('multer');
+
+// const upload = multer();
+
 router
   .route('/')
   /** GET /api/teams - Get list of users */
@@ -19,5 +23,13 @@ router
   .route('/:teamId')
   .get(teamCtrl.single)
   .post(teamCtrl.update);
+
+router
+  .route('/analyze/:teamId')
+  .post(ifNoUserRedirect()/* , upload.array()*/, teamCtrl.analyze);
+
+router
+  .route('/delete/:teamId')
+  .delete(teamCtrl.deleteTeam);
 
 module.exports = router;

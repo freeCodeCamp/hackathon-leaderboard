@@ -46,17 +46,67 @@ function create(req, res, next) {
         .filter(Boolean);
   const webhooks = createWebhooks();
   return Team.create({ ...team, collaborators })
+    if (!newTeam) {
     .then((newTeam) => {
       if (!newTeam) {
         res.status(500).json({ acknowledged: false });
         return null;
-      }
+    }
       return createRelationships(req.user._id, newTeam._id, webhooks).then(() =>
         res.json({ acknowledged: true, webhooks })
       );
-    })
-    .catch(next);
+    )
+    .then(() => {
+      res.redirect('/team');
+    });
+  });
 }
+
+function update(req, res) {
+  const { body: team } = req;
+  const collaborators = team.collaborators.split(',').map(str => str.trim())
+    .filter(Boolean);
+  team.collaborators = collaborators;
+  Team.findOneAndUpdate(
+    { _id: req.params.teamId },
+    { $set: team },
+    { safe: true, new: true, multi: false }
+  )
+  .then((newTeam) => {
+    log(newTeam);
+    res.redirect('/team');
+  });
+}
+/* updates lighthouse scores for a team */
+function analyze(req, res) {
+  return Team.findOne({ _id: req.params.teamId })
+  .then((team) => {
+    if (!team) {
+      return res.redirect('/team');
+    }
+    async function updateTeamScore() {
+      await new Promise((resolve, reject) => {
+        launchChromeAndRunLighthouse(team.siteUrl).then((results) => {
+          const resultsAddDate = results;
+          resultsAddDate.date = new Date();
+          Team.findOneAndUpdate(
+            { _id: team._id },
+            {
+              $push: { lighthouse: resultsAddDate }
+            },
+            {
+              new: true,
+              multi: false
+            }
+          )
+          .then((newTeam) => {
+            res.status(200).json(newTeam);
+            resolve();
+          })
+    .catch(next);
+            if (err) {
+              reject(err);
+            }
 
 function update(req, res) {
   const { body: team } = req;
