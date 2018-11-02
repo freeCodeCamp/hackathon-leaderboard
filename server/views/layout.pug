@@ -19,7 +19,26 @@ html(lang='en')
           var self = this;
           self.log();
           self.getTeams();
-          
+          var graph = document.getElementsByClassName('graph')[0];
+          if (!graph) {
+            
+          } else {
+            var dots = [];
+        	var rects = [];
+        	data.forEach(function(dat){
+            if (dat.name === "TS") {
+            	for (var i in dat.data) {
+                dots.push(dat.data[i])
+            	}
+            } else {
+            	for (var i in dat.data) {
+                rects.push(dat.data[i])
+            	}
+            }
+            
+        	})
+        	graphIt(data, dots, rects)
+          }
         },
         methods: {
           parseObj: function(obj){
@@ -111,22 +130,23 @@ html(lang='en')
 
             return actionContainer.replaceChild(webhookPanel, createTeamForm);
           },
-          buildWebhookDisplay(webhook) {
+          buildWebhookDisplay(webhook) { 
             var secretId = webhook.name + '-secret';
             var urlId = webhook.name + '-url';
             return '<div class="row"><div class="col"><h5 class="card-title">' + webhook.name + '</h5></div></div>'+
             '<div class="row">' +
               '<div class="col webhook-container">'+
                 '<label for="' + urlId + '">URL</label>' +
-                '<input id="' + urlId + '" type="url" readonly="" value="'+ webhook.webhook + '" />'+
+                '<input id="' + urlId + '" type="url" readonly="" value="'+webhook.webhook + '" />'+
               '</div>' +
-            '</div><br /><hr /><br />'+
+              '<hr />' +
             '<div class="row">'+
               '<div class="col webhook-container">'+
                 '<label for="'+secretId + '">Secret</label>' +
                 '<input id="' + secretId + '" type="text" readonly="" value="'+ webhook.secret+'" />'+
               '</div>' +
-            '</div>';
+            '</div>' +
+            '<br /><br/>';
           },
           removeTeam() {
             var self = this;
