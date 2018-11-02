@@ -1,16 +1,22 @@
-extends layout
-block header
-block content
-
-  div
-    
-    include partials/nav.pug
+doctype html
+html(lang='en')
+  include partials/head.pug
+  body#page-top
+    // Navigation
+    nav#mainNav.navbar.navbar-expand-lg.bg-secondary.fixed-top.text-uppercase
+      .container
+        a.navbar-brand.js-scroll-trigger(href='#page-top') Start Bootstrap
+        button.navbar-toggler.navbar-toggler-right.text-uppercase.bg-primary.text-white.rounded(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+          | Menu
+          i.fas.fa-bars
+        #navbarResponsive.collapse.navbar-collapse
+          ul.navbar-nav.ml-auto
+            li.nav-item.mx-0.mx-lg-1
+              a.nav-link.py-3.px-0.px-lg-3.rounded.js-scroll-trigger(href=`https://github.com/login/oauth/authorize?scope=user:email&client_id=${githubClientId}`) Signin with GitHub
+    // Header
+    header.jumbotron.bg-primary.text-white.text-center
+      .container
+        h2.font-weight-light.mb-0 Welcome to the JAMstack Hackathon 2018
     main
       .container
         h1 Hello!
-      .container#leaderboard
-        if (user && user.admin)
-          button.btn.btn-primary(v-on:click="getTeams", v-text="(teams[0] !== '' ? 'Last refresh '+ new Date(teams[0].lighthouse[teams[0].lighthouse.length - 1].date) : 'refresh')")
-        include partials/leaderboard
-      
-      

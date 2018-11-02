@@ -1,15 +1,10 @@
 function handlePassportLogin(req, res) {
-  // eslint-disable-next-line no-param-reassign
-  req.session.userId = req.user._id;
   return res.redirect('/');
 }
 
 function handleSignout(req, res) {
-  if (req.session) {
-    req.session.destroy();
-  }
   req.logout();
-  return res.redirect('/');
+  res.redirect('/');
 }
 /**
  * This is a protected route. Will return random number only if jwt token is provided in header.
