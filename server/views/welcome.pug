@@ -1,25 +1,10 @@
-doctype html
-html(lang='en')
-  include partials/head.pug
-  body#page-top
-    // Navigation
-    nav#mainNav.navbar.navbar-custom.navbar-expand-md.fixed-top.text-uppercase
-      .container
-        a.navbar-brand.js-scroll-trigger(href='#page-top') 
-          img.img-responsive(src='https://s3.amazonaws.com/freecodecamp/freecodecamp_logo.svg', alt='learn to code javascript at freeCodeCamp logo')
-        button.navbar-toggler.navbar-toggler-right.text-uppercase.rounded(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
-          | Menu
-          i.fas.fa-bars
-        #navbarResponsive.collapse.navbar-collapse
-          ul.navbar-nav.ml-auto
-            li.nav-item.mx-0.mx-lg-1
-              a.nav-link.py-3.px-0.px-lg-3.rounded(href=`/team`) Team
-            li.nav-item.mx-0.mx-lg-1
-              a.nav-link.py-3.px-0.px-lg-3.rounded(href=`/signout`) Signout
-    // Header
-    header.jumbotron.bg-secondary.text-white.text-center
-      .container
-        h2.font-weight-light.mb-0 Welcome to the 2018 freeCodeCamp JAMstack Hackathon
+extends layout
+block header
+block content
+  div
+    include partials/nav.pug
     main
       .container
         h1 Hello #{username}!
+      .container#leaderboard
+        include partials/leaderboard.pug

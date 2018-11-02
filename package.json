@@ -54,6 +54,7 @@
     "express-session": "^1.15.6",
     "express-validation": "1.0.2",
     "express-winston": "2.5.0",
+    "graceful-fs": "^4.1.13",
     "helmet": "3.12.0",
     "http-status": "1.0.1",
     "joi": "10.6.0",
