@@ -27,7 +27,7 @@ const store = new MongoDBStore({
   collection: 'mySessions'
 });
 store.on('error', (error) => {
-  console.log(error);
+  logger(error);
 });
 
 app.use(bodyParser.json());
@@ -38,7 +38,7 @@ app.use(methodOverride());
 app.use(express.static(publicPath));
 app.use(helmet());
 app.use(cors());
-app.use(session({ secret: config.cookieSecret, resave: true, saveUninitialized: true }));
+app.use(session({ secret: config.cookieSecret, resave: true, saveUninitialized: true, store }));
 app.use(passport.initialize());
 app.use(passport.session());
 

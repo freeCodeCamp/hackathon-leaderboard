@@ -9,7 +9,8 @@ block content
       .container
         h1 Hello!
       .container#leaderboard
-        button.btn.btn-primary(v-on:click="getTeams")
+        if (user && user.admin)
+          button.btn.btn-primary(v-on:click="getTeams", v-text="(teams[0] !== '' ? 'Last refresh '+ new Date(teams[0].lighthouse[teams[0].lighthouse.length - 1].date) : 'refresh')")
         include partials/leaderboard
       
       

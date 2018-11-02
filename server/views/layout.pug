@@ -3,6 +3,7 @@ html(lang='en')
   include partials/head.pug
   body#page-top
     block header
+    // p #{session.userId}
     #vue
       block content
     include partials/scripts.pug
@@ -28,11 +29,11 @@ html(lang='en')
             return arr;
           },
           getTeams() {
-            const self = this;
+            var self = this;
             axios.get('/api/teams')
             .then((res) => {
-              console.log(res);
-              self.data = res;
+              console.log(res.data);
+              self.teams = res.data;
             })
           },
           log: function() {
