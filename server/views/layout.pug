@@ -9,13 +9,13 @@ html(lang='en')
     script(type="text/javascript").
       new Vue({
         el: '#vue',
-        data: function data() { return { 
+        data: function data() { return {
             teams: this.parseArr(!{JSON.stringify(teams)}),
             team: this.parseObj(!{JSON.stringify(team)}),
             webhooks: '',
             checked: false,
-            picked: 
-            (this.parseObj(!{JSON.stringify(team)}) !== '' ? 
+            picked:
+            (this.parseObj(!{JSON.stringify(team)}) !== '' ?
               (
                 this.parseObj(!{JSON.stringify(team)}).isOnlineHackathon ?
                 'Online Only' :
@@ -34,7 +34,7 @@ html(lang='en')
               screenshot: 'Screenshot'
             },
             lighthousekeys: [ 'seo', 'best-practices', 'accessibility', 'pwa', 'performance']
-          } 
+          }
         },
         mounted: function() {
           var self = this;
@@ -97,7 +97,7 @@ html(lang='en')
                   console.log(itemA,itemB)
                   break;
                 default:
-                  
+
               }
               switch(ascending) {
                 case true:
@@ -153,7 +153,7 @@ html(lang='en')
             var teamIsOnline = createTeamForm.querySelector('#isOnLine').checked;
             var team = {
               name: teamName,
-              collaborators: teamCollaborators.split(',').map(function(str) { return str.trim(); }).filter(Boolean),
+              collaborators: teamCollaborators.split(',').map(function(str) { return str.trim(); }).filter(function(item, pos,self) { return self.indexOf(item) == pos; }),
               githubRepository: teamRepo,
               siteUrl: teamSite,
               isOnlineHackathon: teamIsOnline
@@ -172,7 +172,7 @@ html(lang='en')
                     return self.createFlash('danger', 'Something went wrong '+msg+'ing your team, more info in the console')
                   })
                 }
-                
+
               } else {
                 return self.createFlash('warning', 'Something went wrong '+msg+'ing your team')
               }
@@ -184,7 +184,7 @@ html(lang='en')
               console.log(self.webhooks)
             }
             axios.get(`/api/teams/webhooks/${self.team._id}`)
-            .then(function(result) { 
+            .then(function(result) {
               console.log(result.data.webhook)
               self.webhooks = result.data.webhook;
             })
@@ -204,5 +204,5 @@ html(lang='en')
           log: function() {
             console.log(Object.keys(this.teams[0]))
           }
-        } 
+        }
       })
