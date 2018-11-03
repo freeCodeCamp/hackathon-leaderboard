@@ -3,12 +3,13 @@ const scheduleTest = require('../lighthouse/scheduler');
 
 function handleNetlifyWebhook(req, res) {
   const {
-    body: { url }
+    body: { url, screenshot_url }
   } = req;
-
   res.sendStatus(200);
   const { teamId } = res.locals;
-  return scheduleTest({ teamId, url });
+  // eslint-disable-next-line
+  const screenshot = screenshot_url;
+  return scheduleTest({ teamId, url, screenshot });
 }
 
 module.exports = { handleNetlifyWebhook };

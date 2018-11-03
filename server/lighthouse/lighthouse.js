@@ -20,7 +20,7 @@ async function launchChromeAndRunLighthouse(url) {
   );
 
   await browser.close();
-  return { ...results, url };
+  return results;
 }
 
 /** Usage */

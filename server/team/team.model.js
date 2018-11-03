@@ -8,7 +8,8 @@ const LighthouseSchema = new mongoose.Schema({
   'best-practices': Number,
   accessibility: Number,
   pwa: Number,
-  performance: Number
+  performance: Number,
+  screenshot: String
 });
 
 const TeamSchema = new mongoose.Schema({
