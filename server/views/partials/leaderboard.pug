@@ -16,14 +16,15 @@ table.table(cellspacing="0px", width="100%", style="width: 100%;overflow:hidden;
     
     tr
       
+      th(v-on:click="sortBy('buildStatus', ascending)", style="cursor:pointer;") Build Status
+        
       th(v-on:click="sortBy('name', ascending)", style="cursor: pointer;") Team Name
       th Repo
       th Site
       th
         ul
           li.avatar Online 
-          li.avatar | 
-          li.avatar In-person
+          li.avatar(style="float:right;") In-person
 
       th(v-on:click="sortBy('lighthouse', ascending)", style="cursor: pointer;") Lighthouse
       th Collaborators

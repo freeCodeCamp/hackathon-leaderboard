@@ -17,6 +17,7 @@ html(lang='en')
             picked: 'All',
             ascending: true,
             columns: {
+              buildStatus: 'Build Status',
               name: 'Team Name',
               githubRepository: 'Repo',
               siteUrl: 'Site',
@@ -75,12 +76,12 @@ html(lang='en')
                     return a.lighthouse[a.lighthouse.length - 1].k;
                   }).reduce(function(acc, curr){
                     return acc + curr;
-                  });
+                  }) / 5;
                   itemB = self.lighthousekeys.map(function(k){
                     return b.lighthouse[b.lighthouse.length - 1].k;
                   }).reduce(function(acc, curr){
                     return acc + curr;
-                  });
+                  }) / 5;
                   console.log(itemA,itemB)
                   break;
                 default:
