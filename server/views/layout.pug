@@ -60,7 +60,6 @@ html(lang='en')
             var self = this;
             axios.get('/api/teams')
             .then((res) => {
-              console.log(res.data);
               self.teams = res.data;
             })
           },
