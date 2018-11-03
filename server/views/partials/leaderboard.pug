@@ -1,30 +1,27 @@
-.form-check.row
-  .col
-    input(type="radio", id="all", value="All", v-model="picked")
-    label(for="all") All
-  .col
-    input(type="radio", id="online", value="Online Only", v-model="picked")
-    label(for="online") Online
-  .col
-    input(type="radio", id="inPerson", value="In-person", v-model="picked")
-    label(for="inPerson") In-Person
 
-    
+.leaderboard-toggle.form-check.btn-group.btn-group-toggle
+  label.btn.btn-primary.active(for="all") All
+    input(type="radio", id="all", value="All", v-model="picked")
+  label.btn.btn-primary(for="online") Online
+    input(type="radio", id="online", value="Online Only", v-model="picked")
+  label.btn.btn-primary(for="inPerson") In-Person
+    input(type="radio", id="inPerson", value="In-person", v-model="picked")
+
 
 table.table(cellspacing="0px", width="100%", style="width: 100%;overflow:hidden;")
   thead
     
     tr
       
-      th(v-on:click="sortBy('buildStatus', ascending)", style="cursor:pointer;") Build Status
-        
+      th(v-on:click="sortBy('buildStatus', ascending)", style="cursor:pointer;") Build Status   
       th(v-on:click="sortBy('name', ascending)", style="cursor: pointer;") Team Name
       th Repo
       th Site
       th
-        ul Hackathon
-          li.avatar Online 
-          li.avatar(style="float:right;") In-person
+        ul.hackathon-status-header Hackathon
+          div.hackathon-status-header-options
+            li.avatar Online 
+            li.avatar In-person
 
       th(v-on:click="sortBy('lighthouse', ascending)", style="cursor: pointer;") Lighthouse
       th Collaborators

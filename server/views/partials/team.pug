@@ -1,5 +1,3 @@
-
-
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'buildStatus'")
   // ['initial', 'pending', 'complete', 'failed']
   li.avatar
@@ -17,11 +15,11 @@ td(v-for="(key, j) in Object.keys(team)", v-if="key === 'siteUrl'")
 
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'isOnlineHackathon'")
   
-  ul
+  ul.check-container
     li.avatar
       // team[key] === true means online-only
       img(v-bind:src="(team[key] ? '/images/circle-check.svg' : '/images/unchecked.svg')")
-    li.avatar(style="float:right")
+    li.avatar
       // if !team[key] means in-person
       img(v-bind:src="(!team[key] ? '/images/circle-check.svg' : '/images/unchecked.svg')")
 

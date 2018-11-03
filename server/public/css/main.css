@@ -61,3 +61,38 @@ ul > li {
 .form-check input {
   margin-right: 5px;
 }
+.leaderboard-toggle {
+  margin: .75rem 0;
+}
+/* Centers all text and radio buttons on leaderboard */
+#leaderboard {
+  text-align: center;
+}
+/* Styling leaderboard table */
+.table {
+  margin: auto;
+  margin-top: .75rem;
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 20px;
+}
+th > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.hackathon-status-header {
+  display: flex;
+  flex-direction: column;
+}
+.hackathon-status-header-options {
+  display: flex;
+  justify-content: space-evenly;
+}
+.check-container {
+  display: flex;
+  justify-content: space-around;
+}

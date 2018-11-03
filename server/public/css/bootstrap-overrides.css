@@ -27,3 +27,11 @@ body {
 .navbar-light .nav-item:hover .nav-link {
   color: #ffffff;
 }
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+  background-color: #006400 !important;
+  border-color: #006400 !important;
+}
