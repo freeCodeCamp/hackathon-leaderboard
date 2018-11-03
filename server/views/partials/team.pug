@@ -45,6 +45,6 @@ td(v-for="(key, j) in Object.keys(team)", v-if="key === 'screenshot'")
   span.screenshot
     img(v-bind:src="team[key]", v-bind:title="'screenshot for team '+ team.name", v-bind:alt="'screenshot for team '+ team.name")
 
-td(v-if="Object.keys(team).indexOf('screenshot') === -1")
+td(v-if="team && Object.keys(team).indexOf('screenshot') === -1")
   span.screenshot
     img(v-bind:src="'/images/fcc_mock_screenshot.png'", v-bind:title="'screenshot'", v-bind:alt="'screenshot'")
