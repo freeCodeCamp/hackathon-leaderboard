@@ -29,13 +29,15 @@ block content
               label(for='team-collab') Team Collaborators
               input#team-collab.form-control(type='text', aria-describedby='team-collab-help', placeholder='')
               small#team-collab-help.form-text.text-muted A comma separated list of Github usernames.
+            
             .form-group.form-check
               legend Which hackathon are you participating in?
               .col
-                input#isOnLine(type="radio", v-model="checked")
+                input#isOnLine(type="radio", v-model="picked")
                 label(for="isOnLine") The online hackathon
               .col
                 input(type="radio", id="inPerson", value="In-person", v-model="picked")
                 label(for="inPerson") The in-person hackathon in San Francisco
+
 
             button.btn.btn-primary(type='submit') Submit

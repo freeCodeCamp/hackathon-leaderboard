@@ -28,18 +28,28 @@ block content
             label(for='team-collab') Team Collaborators
             input#team-collab.form-control(type='text', aria-describedby='team-collab-help', placeholder= team.collaborators.join(', '), value= team.collaborators.join(', '), name='collaborators')
             small#team-collab-help.form-text.text-muted A comma separated list of Github usernames
-          .form-check.row
+          
+          .form-group.form-check
+            legend Which hackathon are you participating in?
             .col
-              input#isOnLine(type="radio", value= team.isOnlineHackathon, name='isOnlineHackathon', checked= team.isOnlineHackathon )
+              input#isOnLine(type="radio", value="Online Only", v-model="picked")
               label(for="isOnLine") The online hackathon
             .col
-              input(type="radio", id="inPerson", value= !team.isOnlineHackathon, name='isNotOnlineHackathon', checked= !team.isOnlineHackathon )
+              input(type="radio", id="inPerson", value="In-person", v-model="picked")
               label(for="inPerson") The in-person hackathon in San Francisco
-          .row
-            .col
-              button.btn.btn-primary(type='submit') Submit
-            .col
-              a.btn.btn-danger(role="button", v-on:click="removeTeam") Remove Team
-              small.form-text.danger Warning: Team removal cannot be undone.
+
       .container
         include partials/viewWebhooks.pug
+        h1 Instructions
+        ol
+          li Click on 'Site settings' in your dashboard.
+            img(src="/images/1.png", width="100%", style="height: auto;margin: 0 0 20px 0;")
+          
+          li From the Settings page, click on 'Build & Deploy'.
+            img(src="/images/2.png", width="100%", style="height: auto;margin: 0 0 20px 0;")
+          li Under Deploy notifications, click to expand the 'Add notification' menu.
+            img(src="/images/3.png", width="100%", style="height: auto;margin: 0 0 20px 0;")
+          li Choose 'Outgoing webhook'.
+            img(src="/images/4.png", width="100%", style="height: auto;margin: 0 0 20px 0;")
+          li Choose the 'Deploy succeeded' Event and enter the webhook URL and secret.
+            img(src="/images/5.png", width="100%", style="height: auto;margin: 0 0 20px 0;")

@@ -14,7 +14,14 @@ html(lang='en')
             team: this.parseObj(!{JSON.stringify(team)}),
             webhooks: '',
             checked: false,
-            picked: 'All',
+            picked: 
+            /*(this.parseObj(!{JSON.stringify(team)}) !== '' ? 
+              (
+                this.parseObj(!{JSON.stringify(team)}).isOnlineHackathon ?
+                'isOnLine' :
+                'inPerson'
+              ) : 'All'*/
+              'All',
             ascending: true,
             buildStatuses: ['initial', 'pending', 'complete', 'failed'],
             columns: {
