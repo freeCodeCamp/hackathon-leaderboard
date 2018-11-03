@@ -32,7 +32,7 @@ q.on('timeout', (next, job) => {
   const { url } = job;
   const teamId = state.get(url);
 
-  return Team.updateOne({ _id: teamId }, { buildStatus: 'failed' })
+  return Team.update({ _id: teamId }, { buildStatus: 'failed' })
     .then(() => state.delete(url))
     .then(next);
 });
@@ -54,7 +54,7 @@ q.on('error', (err, job) => {
   const teamId = state.get(url);
   // eslint-disable-next-line no-console
   console.error(err);
-  return Team.updateOne({ _id: teamId }, { buildStatus: 'failed' }).then(() => state.delete(url));
+  return Team.update({ _id: teamId }, { buildStatus: 'failed' }).then(() => state.delete(url));
 });
 
 module.exports = schedlueTest;

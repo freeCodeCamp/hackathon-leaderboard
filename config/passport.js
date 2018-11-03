@@ -3,6 +3,7 @@ const GitHubStrategy = require('passport-github').Strategy;
 const debug = require('debug');
 
 const log = debug('fcc:config:passport');
+const { host } = require('./config');
 
 const {
   github: { id, secret }
@@ -15,7 +16,7 @@ passport.use(
     {
       clientID: id,
       clientSecret: secret,
-      callbackURL: 'http://localhost:4040/api/auth/github/callback'
+      callbackURL: `${host}api/auth/github/callback`
     },
     (accessToken, refreshToken, profile, cb) => {
       const {
