@@ -56,6 +56,7 @@ html(lang='en')
             })
           },
           sortBy(key, ascending) {
+            console.log(key, ascending)
             var self = this;
             self.ascending = !ascending;
             self.teams.sort(function(a, b){

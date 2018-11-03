@@ -15,14 +15,28 @@ table.table(cellspacing="0px", width="100%", style="width: 100%;overflow:hidden;
   thead
     
     tr
-      th(v-for='(key, j) in Object.keys(teams[0])',
-        v-if="['_id', '__v', 'buildStatus'].indexOf(key) === -1",
-        v-html="(key === 'isOnlineHackathon' ? `<ul><li class='avatar'>Online</li><li class='avatar'> | </li><li class='avatar'>In-person</li></ul>` : `<span>${columns[key]}</span>`)",
-        v-bind:width="(key === 'screenshot' ? 120 : '')",
-        v-on:click="(['name', 'isOnlineHackathon', 'lighthouse'].indexOf(key) !== -1 ? sortBy(key, ascending) : '')"
-        scope="col", style="cursor: pointer;"
-        )
-      th(v-if="!team.screenshot", width="120", scope="col") Screenshot
+      
+      th(v-on:click="sortBy('name', ascending)", style="cursor: pointer;") Team Name
+      th Repo
+      th Site
+      th
+        ul
+          li.avatar Online 
+          li.avatar | 
+          li.avatar In-person
+
+      th(v-on:click="sortBy('lighthouse', ascending)", style="cursor: pointer;") Lighthouse
+      th Collaborators
+      th Screenshot
+      //
+        th(v-for='(key, j) in Object.keys(teams[0])',
+          v-if="['_id', '__v', 'buildStatus'].indexOf(key) === -1",
+          v-html="(key === 'isOnlineHackathon' ? `<ul><li class='avatar'>Online</li><li class='avatar' style='float:right;text-align:right;'>In-person</li></ul>` : `<span>${columns[key]}</span>`)",
+          v-bind:width="(key === 'screenshot' ? 120 : '')",
+          v-on:click="(['name', 'isOnlineHackathon', 'lighthouse'].indexOf(key) !== -1 ? sortBy(key, ascending) : '')"
+          scope="col", style="cursor: pointer;"
+          )
+        th(v-if="!team.screenshot", width="120", scope="col") Screenshot
       
 
   tbody(v-if="picked === 'Online Only'")

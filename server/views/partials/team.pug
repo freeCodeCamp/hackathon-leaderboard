@@ -1,24 +1,41 @@
-td(v-for='(key, j) in Object.keys(team)', v-if="['_id', '__v', 'buildStatus'].indexOf(key) === -1")
-  span(v-if="key === 'name'", v-text="team[key]")
-  a(v-if="key === 'githubRepository'", v-bind:href="team[key]", v-text="'link'")
-  a(v-else-if="key === 'siteUrl'", v-bind:href="team[key]", v-text="'link'")
-  a(v-else-if="key === 'isOnlineHackathon'")
-    ul
-      li.avatar
-        // team[key] === true means online-only
-        img(v-bind:src="(team[key] ? '/images/circle-check.svg' : '/images/unchecked.svg')")
-      li.avatar(style="float:right")
-        // if !team[key] means in-person
-        img(v-bind:src="(!team[key] ? '/images/circle-check.svg' : '/images/unchecked.svg')")
-  ul(v-else-if="key === 'collaborators'")
-    li.avatar(v-for="(member, k) in team[key]")
-      img(:src="`https://github.com/${member}.png`", :title="member")
-  span(v-else-if="key === 'lighthouse'")
+td(v-for="(key, j) in Object.keys(team)", v-if="key === 'name'")
+  span(v-text="team[key]")
+td(v-for="(key, j) in Object.keys(team)", v-if="key === 'githubRepository'")
+  a(v-bind:href="team[key]", v-text="'link'")
+td(v-for="(key, j) in Object.keys(team)", v-if="key === 'siteUrl'")
+
+  a(v-bind:href="team[key]", v-text="'link'")
+
+td(v-for="(key, j) in Object.keys(team)", v-if="key === 'isOnlineHackathon'")
+  
+  ul
+    li.avatar
+      // team[key] === true means online-only
+      img(v-bind:src="(team[key] ? '/images/circle-check.svg' : '/images/unchecked.svg')")
+    li.avatar(style="float:right")
+      // if !team[key] means in-person
+      img(v-bind:src="(!team[key] ? '/images/circle-check.svg' : '/images/unchecked.svg')")
+
+td(v-for="(key, j) in Object.keys(team)", v-if="key === 'lighthouse'")
+
+  span
     ul(v-if="team[key].length", v-for="(result, l) in team[key]")
       li(v-for="(metric, m) in Object.keys(result)", v-if="metric !== '_id'")
         strong(v-text="metric+': '")
         span(v-if="metric === 'date'", v-text="new Date(result[metric]).getFullYear() + '/'+ new Date(result[metric]).getMonth()+'/'+ new Date(result[metric]).getDate()+' '+ new Date(result[metric]).getHours()+':'+ new Date(result[metric]).getMinutes()")
         span(v-else-if="metric !== 'date'", v-text="result[metric]")
-td(v-if="team && !team.screenshot")
+
+td(v-for="(key, j) in Object.keys(team)", v-if="key === 'collaborators'")
+
+  ul(v-if="key === 'collaborators'")
+    li.avatar(v-for="(member, k) in team[key]")
+      img(:src="`https://github.com/${member}.png`", :title="member")
+
+td(v-for="(key, j) in Object.keys(team)", v-if="key === 'screenshot'")
+
+  span.screenshot
+    img(v-bind:src="team[key]", v-bind:title="'screenshot for team '+ team.name", v-bind:alt="'screenshot for team '+ team.name")
+
+td(v-if="Object.keys(team).indexOf('screenshot') === -1")
   span.screenshot
     img(v-bind:src="'/images/fcc_mock_screenshot.png'", v-bind:title="'screenshot'", v-bind:alt="'screenshot'")
