@@ -28,12 +28,19 @@ body {
   width: 100%;
   height: auto;
 }
-td ul {
+thead {
+  position: sticky;
+  top: 72px;
+  background-color: #fff;
+  z-index: 9;
+}
+td ul, th ul {
   padding-left: 0;
 }
 ul > li {
   list-style-type: none;
 }
+
 .webhook-display {
   margin-top: .75rem;
 }
