@@ -1,3 +1,10 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+.navbar-brand.img-responsive {
+  max-width: 70%;
+  max-height: 70%;
+}
 .webhook-container {
   display: flex;
   justify-content: flex-start;
@@ -26,4 +33,24 @@ td ul {
 }
 ul > li {
   list-style-type: none;
+}
+.webhook-display {
+  margin-top: .75rem;
+}
+/* Capitalizes webhooks.name */
+.webhook-title {
+  text-transform: capitalize;
+}
+.webhook-container:nth-of-type(2) {
+  margin-top: .75rem;
+}
+.form-check {
+  padding: 0;
+}
+.form-check legend {
+  margin-bottom: .5rem;
+  font-size: 1rem;
+}
+.form-check input {
+  margin-right: 5px;
 }

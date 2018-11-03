@@ -1,13 +1,10 @@
-pre(v-if="webhooks && webhooks !== ''") #{JSON.stringify(webhooks, null, 2)}
-  div.row
-    div.col
-      h5.card-title(v-text="webhooks.name")
-    div.row
-      div.col.webhook-container
+div(v-if="webhooks && webhooks !== ''") #{JSON.stringify(webhooks, null, 2)}
+  div.webhook-display
+    h5.webhook-title(v-text="webhooks.name + ' Webhook'")
+    pre
+      div.webhook-container
         label(v-bind:for="webhooks.name+'--url'") URL
         input(v-bind:id="webhooks.name+'--url'", type="url", readonly="", v-bind:value="webhooks.webhook")
-    
-    div.row
-      div.col.webhook-container
-      label(v-bind:for="webhooks.name+'--secret'") Secret
-      input(v-bind:id="webhooks.name+'--secret'", type="url", readonly="", v-bind:value="webhooks.secret")
+      div.webhook-container
+        label(v-bind:for="webhooks.name+'--secret'") Secret
+        input(v-bind:id="webhooks.name+'--secret'", type="url", readonly="", v-bind:value="webhooks.secret")

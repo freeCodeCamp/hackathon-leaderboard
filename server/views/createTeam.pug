@@ -29,7 +29,8 @@ block content
               label(for='team-collab') Team Collaborators
               input#team-collab.form-control(type='text', aria-describedby='team-collab-help', placeholder='')
               small#team-collab-help.form-text.text-muted A comma separated list of Github usernames.
-            .form-check.row
+            .form-group.form-check
+              legend Which hackathon are you participating in?
               .col
                 input#isOnLine(type="radio", v-model="checked")
                 label(for="isOnLine") The online hackathon
