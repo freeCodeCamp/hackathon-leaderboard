@@ -3,8 +3,11 @@ block header
 block content
   div
     include partials/nav.pug
+    header.jumbotron.bg-secondary.text-white.text-center
+      .container
+        h2.font-weight-light.mb-0 2018 freeCodeCamp JAMstack Hackathon
     main
       .container
         h1 Hello!
-      .container#leaderboard
+      .container-fluid#leaderboard
         include partials/leaderboard.pug

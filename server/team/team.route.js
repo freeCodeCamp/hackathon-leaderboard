@@ -21,7 +21,16 @@ router
   .post(ifNoUserRedirect(), ifNoBody400, validate(validators.createTeam), teamCtrl.update);
 
 router
+  .route('/webhooks/:teamId')
+  .get(teamCtrl.viewWebhooks)
+  .post(teamCtrl.newWebhooks);
+
+router
+  .route('/analyze/:teamId')
+  .get(teamCtrl.analyze);
+
+router
   .route('/delete/:teamId')
-  .delete(ifNoUserRedirect(), ifNotOwnTeam400, teamCtrl.deleteTeam);
+  .post(ifNoUserRedirect(), ifNotOwnTeam400, teamCtrl.deleteTeam);
 
 module.exports = router;

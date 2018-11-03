@@ -13,3 +13,17 @@
   width: 33px;
   height: auto;
 }
+.screenshot {
+  position: relative;
+  width: 100%;
+}
+.screenshot img {
+  width: 100%;
+  height: auto;
+}
+td ul {
+  padding-left: 0;
+}
+ul > li {
+  list-style-type: none;
+}

@@ -44,31 +44,57 @@ function create(req, res, next) {
         .split(',')
         .map(str => str.trim())
         .filter(Boolean);
-  const webhooks = createWebhooks();
+
   return Team.create({ ...team, collaborators })
     .then((newTeam) => {
       if (!newTeam) {
         res.status(500).json({ acknowledged: false });
         return null;
       }
-      return createRelationships(req.user._id, newTeam._id, webhooks).then(() =>
-        res.json({ acknowledged: true, webhooks })
+      return res.json({ acknowledged: true, teamId: newTeam._id });
+    })
+    .catch(next);
+}
+
+function newWebhooks(req, res, next) {
+  const webhook = createWebhooks();
+  return Team.findOne({ _id: req.params.teamId })
+    .then((newTeam) => {
+      if (!newTeam) {
+        res.status(500).json({ acknowledged: false });
+        return null;
+      }
+      return createRelationships(req.user._id, newTeam._id, webhook).then(() =>
+        res.json({ acknowledged: true, webhook })
       );
+    })
+    .catch(next);
+}
+
+function viewWebhooks(req, res, next) {
+  return Webhook.findOne({ name: 'netlify', belongsTo: req.params.teamId })
+    .then((webhook) => {
+      if (!webhook) {
+        res.status(500).json({ acknowledged: false });
+        return null;
+      }
+      return res.json({ acknowledged: true, webhook });
     })
     .catch(next);
 }
 
 function update(req, res) {
   const { body: team } = req;
-  const collaborators = team.collaborators
-    .split(',')
-    .map(str => str.trim())
-    .filter(Boolean);
+  const collaborators = Array.isArray(team.collaborators)
+    ? team.collaborators
+    : team.collaborators
+        .split(',')
+        .map(str => str.trim())
+        .filter(Boolean);
   team.collaborators = collaborators;
-  Team.findOneAndUpdate(
+  Team.update(
     { _id: req.params.teamId },
-    { $set: team },
-    { safe: true, new: true, multi: false }
+    team
   ).then(() => res.json({ acknowledged: true }));
 }
 /* updates lighthouse scores for a team */
@@ -134,11 +160,9 @@ function deleteTeam(req, res) {
     User.update({ teamId: req.params.teamId }, { $set: { teamId: null } })
     .then(() => {
       Webhook.remove({ belongsTo: req.params.teamId })
-      .then(() => {
-        res.status(200).json('deleted team');
-      });
+      .then(() => res.redirect('/'));
     });
   });
 }
 
-module.exports = { create, update, list, analyze, single, deleteTeam };
+module.exports = { create, update, list, analyze, single, deleteTeam, newWebhooks, viewWebhooks };

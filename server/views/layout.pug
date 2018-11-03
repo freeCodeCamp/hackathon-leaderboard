@@ -12,32 +12,28 @@ html(lang='en')
         data: function data() { return { 
             teams: this.parseArr(!{JSON.stringify(teams)}),
             team: this.parseObj(!{JSON.stringify(team)}),
-            checked: false
+            webhooks: '',
+            checked: false,
+            picked: 'All',
+            columns: {
+              name: 'Team Name',
+              githubRepository: 'Repo',
+              siteUrl: 'Site',
+              isOnlineHackathon: 'Online-only',
+              lighthouse: 'Lighthouse',
+              collaborators: 'Collaborators',
+              screenshot: 'Screenshot'
+            }
           } 
         },
         mounted: function() {
           var self = this;
           self.log();
-          self.getTeams();
-          var graph = document.getElementsByClassName('graph')[0];
-          if (!graph) {
-            
-          } else {
-            var dots = [];
-        	var rects = [];
-        	data.forEach(function(dat){
-            if (dat.name === "TS") {
-            	for (var i in dat.data) {
-                dots.push(dat.data[i])
-            	}
-            } else {
-            	for (var i in dat.data) {
-                rects.push(dat.data[i])
-            	}
-            }
-            
-        	})
-        	graphIt(data, dots, rects)
+          if (self.teams && self.teams !== '' && self.teams !== ['']) {
+            self.getTeams();
+          }
+          if (self.team && self.team !== '' && self.team !== ['']) {
+            self.renderWebhooks();
           }
         },
         methods: {
@@ -70,7 +66,15 @@ html(lang='en')
           handleFormSubmit(e) {
             var self = this;
             e.preventDefault();
-            var createTeamForm = document.getElementById('create-team-form');
+            var axiosurl, msg;
+            if (e.target.getAttribute('id') === 'create-team-form') {
+              axiosurl = '/api/teams';
+              msg = 'creat'
+            } else {
+              axiosurl = `/api/teams/${self.team._id}`
+              msg = 'updat'
+            }
+            var createTeamForm = document.getElementById('create-team-form') || document.getElementById('update-team-form');
             var flashContainer = document.getElementById('flash-container');
             var actionContainer = document.getElementById('team-form-or-webhook');
             var teamName = createTeamForm.querySelector('#team-name').value;
@@ -85,75 +89,46 @@ html(lang='en')
               siteUrl: teamSite,
               isOnlineHackathon: teamIsOnline
             }
-            return axios.post('/api/teams', team).then(function(response) {
-             var status = response.status;
+            return axios.post(axiosurl, team).then(function(response) {
+              var status = response.status;
               if (parseInt(status, 10) === 200) {
-                self.createFlash('success', 'Your team has been created!<br><br>Please make note of your webhooks below');
-                return response.data.webhooks;
+                self.createFlash('success', 'Your team has been '+msg+'ed!<br><br>');
+                if (msg === 'creat') {
+                  axios.post(`/api/teams/webhooks/${response.data.teamId}`)
+                  .then(() => {
+                    return window.location.href = '/team';
+                  })
+                  .catch(function(error){
+                    console.error(error);
+                    return self.createFlash('danger', 'Something went wrong '+msg+'ing your team, more info in the console')
+                  })
+                }
+                
               } else {
-                return self.createFlash('warning', 'Something went wrong creating your team')
+                return self.createFlash('warning', 'Something went wrong '+msg+'ing your team')
               }
-            })
-            .then(function(webhooks) {
-              if (!webhooks) {
-                return self.createFlash('danger', 'The API did not send any webhooks back')
-              }
-              return self.renderWebhooks(webhooks)
-            })
-            .catch(function(error) {
-              console.error(error);
-              return self.createFlash('danger', 'Something went wrong creating your team, more info in the console')
             })
           },
-          renderWebhooks(webhooks) {
+          renderWebhooks() {
             var self = this;
-            var createTeamForm = document.getElementById('create-team-form');
-            var flashContainer = document.getElementById('flash-container');
-            var actionContainer = document.getElementById('team-form-or-webhook');
-            var webhookPanel = document.createElement('DIV');
-            var header = document.createElement('H2')
-            var panelBody = document.createElement('DIV');
-            var githubWebhook = document.createElement('DIV');
-            var netlifyWebhook = document.createElement('DIV');
-
-            githubWebhook.innerHTML = self.buildWebhookDisplay(webhooks.github);
-            netlifyWebhook.innerHTML =  self.buildWebhookDisplay(webhooks.netlify);
-            webhookPanel.classList.add('card','border-success', 'mb-3','container');
-            header.classList.add('card-header');
-            header.innerText = 'Your Sites Webhooks';
-            panelBody.classList.add('card-body');
-
-            webhookPanel.appendChild(header);
-            panelBody.appendChild(githubWebhook);
-            panelBody.appendChild(netlifyWebhook);
-            webhookPanel.appendChild(panelBody);
-
-            return actionContainer.replaceChild(webhookPanel, createTeamForm);
-          },
-          buildWebhookDisplay(webhook) { 
-            var secretId = webhook.name + '-secret';
-            var urlId = webhook.name + '-url';
-            return '<div class="row"><div class="col"><h5 class="card-title">' + webhook.name + '</h5></div></div>'+
-            '<div class="row">' +
-              '<div class="col webhook-container">'+
-                '<label for="' + urlId + '">URL</label>' +
-                '<input id="' + urlId + '" type="url" readonly="" value="'+webhook.webhook + '" />'+
-              '</div>' +
-              '<hr />' +
-            '<div class="row">'+
-              '<div class="col webhook-container">'+
-                '<label for="'+secretId + '">Secret</label>' +
-                '<input id="' + secretId + '" type="text" readonly="" value="'+ webhook.secret+'" />'+
-              '</div>' +
-            '</div>' +
-            '<br /><br/>';
+            if (self.webhooks) {
+              console.log(self.webhooks)
+            }
+            axios.get(`/api/teams/webhooks/${self.team._id}`)
+            .then(function(result) { 
+              console.log(result.data.webhook)
+              self.webhooks = result.data.webhook;
+            })
           },
           removeTeam() {
             var self = this;
             if (self.team && self.team !== '') {
-              axios.delete(`/api/teams/delete/${self.team._id}`)
+              axios.post(`/api/teams/delete/${self.team._id}`)
               .then((res) => {
-                console.log(res)
+                return window.location.href = '/';
+              })
+              .catch((err) => {
+                console.log(err)
               })
             }
           },

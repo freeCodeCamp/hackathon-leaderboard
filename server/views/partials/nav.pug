@@ -7,6 +7,8 @@ nav#mainNav.navbar.navbar-custom.navbar-expand-md.fixed-top.text-uppercase
       i.fas.fa-bars
     #navbarResponsive.collapse.navbar-collapse
       ul.navbar-nav.ml-auto
+        li.nav-item.mx-0.mx-lg-1
+          a.nav-link.py-3.px-0.px-lg-3.rounded(href=`/`) Home
         if (!session || !session.userId)
           li.nav-item.mx-0.mx-lg-1
             a.nav-link.py-3.px-0.px-lg-3.rounded.js-scroll-trigger(href=`https://github.com/login/oauth/authorize?scope=user:email&client_id=${githubClientId}`) Signin with GitHub
@@ -15,8 +17,3 @@ nav#mainNav.navbar.navbar-custom.navbar-expand-md.fixed-top.text-uppercase
             a.nav-link.py-3.px-0.px-lg-3.rounded(href=`/team`) Team
           li.nav-item.mx-0.mx-lg-1
             a.nav-link.py-3.px-0.px-lg-3.rounded(href= `/signout`) Signout
-            
-// Header
-header.jumbotron.bg-secondary.text-white.text-center
-  .container
-    h2.font-weight-light.mb-0 Manage your team for the 2018 freeCodeCamp JAMstack Hackathon
