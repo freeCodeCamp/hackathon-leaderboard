@@ -30,7 +30,18 @@ const TeamSchema = new mongoose.Schema({
   isOnlineHackathon: {
     type: Boolean
   },
-  lighthouse: [LighthouseSchema]
+  lighthouse: [LighthouseSchema],
+  buildStatus: {
+    type: String,
+    required: true,
+    default: 'initial',
+    validate: {
+      validator(str) {
+        return ['initial', 'pending', 'complete', 'failed'].includes(str);
+      },
+      message: props => `${props.value} is not a valid build status`
+    }
+  }
 });
 
 /**
