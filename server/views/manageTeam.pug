@@ -29,13 +29,12 @@ block content
             input#team-collab.form-control(type='text', aria-describedby='team-collab-help', placeholder= team.collaborators.join(', '), value= team.collaborators.join(', '), name='collaborators')
             small#team-collab-help.form-text.text-muted A comma separated list of Github usernames
           .form-check.row
-            //
-              .col
-                input#isOnLine(type="radio", value= team.isOnlineHackathon, name='isOnlineHackathon', checked= team.isOnlineHackathon )
-                label(for="isOnLine") The online hackathon
-              .col
-                input(type="radio", id="inPerson", value="In-person", v-model="picked")
-                label(for="inPerson") The in-person hackathon in San Francisco
+            .col
+              input#isOnLine(type="radio", value= team.isOnlineHackathon, name='isOnlineHackathon', checked= team.isOnlineHackathon )
+              label(for="isOnLine") The online hackathon
+            .col
+              input(type="radio", id="inPerson", value= !team.isOnlineHackathon, name='isNotOnlineHackathon', checked= !team.isOnlineHackathon )
+              label(for="inPerson") The in-person hackathon in San Francisco
           .row
             .col
               button.btn.btn-primary(type='submit') Submit
