@@ -1,0 +1,86 @@
+{
+  "id": "5bdce0f0c965924bde56f498",
+  "site_id": "3a55fb36-82ae-4080-a7a6-6e6bd5dc5375",
+  "build_id": "5bdce0f0c965924bde56f499",
+  "state": "ready",
+  "name": "pedantic-poitras-20d18e",
+  "url": "http://pedantic-poitras-20d18e.netlify.com",
+  "ssl_url": "https://pedantic-poitras-20d18e.netlify.com",
+  "admin_url": "https://app.netlify.com/sites/pedantic-poitras-20d18e",
+  "deploy_url": "http://master.pedantic-poitras-20d18e.netlify.com",
+  "deploy_ssl_url": "https://master--pedantic-poitras-20d18e.netlify.com",
+  "created_at": "2018-11-02T23:42:40.100Z",
+  "updated_at": "2018-11-02T23:42:47.373Z",
+  "user_id": "59309a5c3c1d5e18ce895139",
+  "error_message": null,
+  "required": [],
+  "required_functions": [],
+  "commit_ref": "059b6aafe6940c039950cb95fb9984608d9b1ee7",
+  "review_id": null,
+  "branch": "master",
+  "commit_url": "https://github.com/Bouncey/sponsors/commit/059b6aafe6940c039950cb95fb9984608d9b1ee7",
+  "skipped": null,
+  "locked": null,
+  "log_access_attributes": {
+    "type": "firebase",
+    "url": "https://netlify.firebaseio.com/builds/5bdce0f0c965924bde56f499/log"
+  },
+  "title": "Update index.html",
+  "review_url": null,
+  "published_at": "2018-11-02T23:42:44.732Z",
+  "context": "production",
+  "deploy_time": 2,
+  "available_functions": [],
+  "summary": {
+    "status": "ready",
+    "messages": [
+      {
+        "type": "info",
+        "title": "2 new files uploaded",
+        "description": "1 generated page and 1 asset changed.",
+        "details": "New pages include:\n- index.html\n"
+      },
+      {
+        "type": "info",
+        "title": "No redirect rules processed",
+        "description": "This deploy did not include any redirect rules. [Learn more about redirects](https://www.netlify.com/docs/redirects/).",
+        "details": ""
+      },
+      {
+        "type": "info",
+        "title": "No header rules processed",
+        "description": "This deploy did not include any header rules. [Learn more about headers](https://www.netlify.com/docs/headers-and-basic-auth/).",
+        "details": ""
+      },
+      {
+        "type": "info",
+        "title": "All linked resources are secure",
+        "description": "Congratulations! No insecure mixed content found in your files.",
+        "details": null
+      }
+    ]
+  },
+  "screenshot_url": "https://353a23c500dde3b2ad58-c49fe7e7355d384845270f4a7a0a7aa1.ssl.cf2.rackcdn.com/5bdce0f0c965924bde56f498/screenshot.png",
+  "site_capabilities": {
+    "title": "Netlify Team Free",
+    "asset_acceleration": true,
+    "form_processing": true,
+    "cdn_propagation": "partial",
+    "build_gc_exchange": "buildbot-gc",
+    "build_node_pool": "buildbot-external-ssd",
+    "build_cluster": "ha2",
+    "domain_aliases": true,
+    "secure_site": false,
+    "prerendering": true,
+    "proxying": true,
+    "ssl": "custom",
+    "rate_cents": 0,
+    "yearly_rate_cents": 0,
+    "cdn_network": "free_cdn_network",
+    "branch_deploy": true,
+    "managed_dns": true,
+    "geo_ip": true,
+    "split_testing": true,
+    "id": "nf_team_dev"
+  }
+}

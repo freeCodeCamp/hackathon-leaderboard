@@ -20,13 +20,12 @@ async function launchChromeAndRunLighthouse(url) {
   );
 
   await browser.close();
-  return results;
+  return { ...results, url };
 }
 
 /** Usage */
 // launchChromeAndRunLighthouse('https://guide.freecodecamp.org').then((results) => {
 //   console.log(results);
 // });
-
 
 module.exports = launchChromeAndRunLighthouse;

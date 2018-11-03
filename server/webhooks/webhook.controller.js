@@ -1,9 +1,14 @@
-function handleNetlifyWebhook(req, res, next) {
-  return next();
+const scheduleTest = require('../lighthouse/scheduler');
+
+
+function handleNetlifyWebhook(req, res) {
+  const {
+    body: { url }
+  } = req;
+
+  res.sendStatus(200);
+  const { teamId } = res.locals;
+  return scheduleTest({ teamId, url });
 }
 
-function handleGitHubWebhook(req, res, next) {
-  return next();
-}
-
-module.exports = { handleGitHubWebhook, handleNetlifyWebhook };
+module.exports = { handleNetlifyWebhook };
