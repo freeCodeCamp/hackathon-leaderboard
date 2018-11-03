@@ -15,13 +15,12 @@ html(lang='en')
             webhooks: '',
             checked: false,
             picked: 
-            /*(this.parseObj(!{JSON.stringify(team)}) !== '' ? 
+            (this.parseObj(!{JSON.stringify(team)}) !== '' ? 
               (
                 this.parseObj(!{JSON.stringify(team)}).isOnlineHackathon ?
-                'isOnLine' :
-                'inPerson'
-              ) : 'All'*/
-              'All',
+                'Online Only' :
+                'In-person'
+              ) : 'Online Only'),
             ascending: true,
             buildStatuses: ['initial', 'pending', 'complete', 'failed'],
             columns: {
@@ -42,6 +41,7 @@ html(lang='en')
           self.log();
           if (self.teams && self.teams !== '' && self.teams !== ['']) {
             self.getTeams();
+            self.sortBy('lighthouse', true);
           }
           if (self.team && self.team !== '' && self.team !== ['']) {
             self.renderWebhooks();

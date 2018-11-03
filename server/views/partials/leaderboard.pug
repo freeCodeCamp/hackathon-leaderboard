@@ -1,4 +1,3 @@
-
 .leaderboard-toggle.form-check.btn-group.btn-group-toggle
   label.btn.btn-primary.active(for="all") All
     input(type="radio", id="all", value="All", v-model="picked")
@@ -6,18 +5,19 @@
     input(type="radio", id="online", value="Online Only", v-model="picked")
   label.btn.btn-primary(for="inPerson") In-Person
     input(type="radio", id="inPerson", value="In-person", v-model="picked")
-
+    
 
 table.table(cellspacing="0px", width="100%", style="width: 100%;overflow:hidden;")
   thead
     
     tr
       
-      th(v-on:click="sortBy('buildStatus', ascending)", style="cursor:pointer;") Build Status   
+      th(v-on:click="sortBy('buildStatus', ascending)", width="120", style="cursor:pointer;") Build Status
+        
       th(v-on:click="sortBy('name', ascending)", style="cursor: pointer;") Team Name
       th Repo
       th Site
-      th
+      th(width="200")
         ul.hackathon-status-header Hackathon
           div.hackathon-status-header-options
             li.avatar Online 
@@ -25,7 +25,7 @@ table.table(cellspacing="0px", width="100%", style="width: 100%;overflow:hidden;
 
       th(v-on:click="sortBy('lighthouse', ascending)", style="cursor: pointer;") Lighthouse
       th Collaborators
-      th Screenshot
+      th(width="120") Screenshot
 
   tbody(v-if="picked === 'Online Only'")
     

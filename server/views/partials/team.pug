@@ -39,11 +39,11 @@ td(v-for="(key, j) in Object.keys(team)", v-if="key === 'collaborators'")
       a(:href="`https://github.com/${member}`" target="_blank")
         img(:src="`https://github.com/${member}.png`", :title="member")
 
-td(v-for="(key, j) in Object.keys(team)", v-if="key === 'screenshot'")
+td
 
-  span.screenshot
-    img(v-bind:src="team[key]", v-bind:title="'screenshot for team '+ team.name", v-bind:alt="'screenshot for team '+ team.name")
+  span.screenshot(v-if="team.lighthouse.length > 0")
+    img(v-bind:src="team.lighthouse[team.lighthouse.length - 1].screenshot", v-bind:title="'screenshot for team '+ team.name", v-bind:alt="'screenshot for team '+ team.name")
 
-td(v-if="team && Object.keys(team).indexOf('screenshot') === -1")
-  span.screenshot
-    img(v-bind:src="'/images/fcc_mock_screenshot.png'", v-bind:title="'screenshot'", v-bind:alt="'screenshot'")
+
+  span.screenshot(v-if="team.lighthouse.length === 0")
+    img(src="/images/fcc_mock_screenshot.png", v-bind:title="'screenshot'", v-bind:alt="'screenshot'")
