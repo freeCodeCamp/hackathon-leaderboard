@@ -23,7 +23,7 @@ block content
           .form-group
             label(for='team-site') Site URL
             input#team-site.form-control(type='url', aria-describedby='team-site-help', placeholder= team.siteUrl, value= team.siteUrl, required=true, name='siteUrl')
-            small#team-name-help.form-text.text-muted The URL of your site, useually provided by netlify.
+            small#team-name-help.form-text.text-muted The URL of your site, usually provided by netlify.
           .form-group
             label(for='team-collab') Team Collaborators
             input#team-collab.form-control(type='text', aria-describedby='team-collab-help', placeholder= team.collaborators.join(', '), value= team.collaborators.join(', '), name='collaborators')

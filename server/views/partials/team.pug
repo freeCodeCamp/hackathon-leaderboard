@@ -36,7 +36,8 @@ td(v-for="(key, j) in Object.keys(team)", v-if="key === 'collaborators'")
 
   ul
     li.avatar(v-for="(member, k) in team[key]")
-      img(:src="`https://github.com/${member}.png`", :title="member")
+      a(:href="`https://github.com/${member}`" target="_blank")
+        img(:src="`https://github.com/${member}.png`", :title="member")
 
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'screenshot'")
 

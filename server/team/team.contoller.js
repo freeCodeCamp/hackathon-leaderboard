@@ -15,7 +15,7 @@ function generateKeys() {
 
 function generateWebhook(provider) {
   const { id, secret } = generateKeys();
-  return { webhook: `${host}/api/webhook/${provider}/${id}`, id, secret, name: provider };
+  return { webhook: `${host}api/webhook/${provider}/${id}`, id, secret, name: provider };
 }
 
 function createWebhooks() {
