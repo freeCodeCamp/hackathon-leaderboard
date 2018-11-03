@@ -76,10 +76,11 @@ html(lang='en')
                     return acc + curr;
                   });
                   itemB = self.lighthousekeys.map(function(k){
-                    return a.lighthouse[a.lighthouse.length - 1].k;
+                    return b.lighthouse[b.lighthouse.length - 1].k;
                   }).reduce(function(acc, curr){
                     return acc + curr;
                   });
+                  console.log(itemA,itemB)
                   break;
                 default:
                   

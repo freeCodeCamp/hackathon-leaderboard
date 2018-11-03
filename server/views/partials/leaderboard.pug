@@ -16,13 +16,14 @@ table.table(cellspacing="0px", width="100%", style="width: 100%;overflow:hidden;
     
     tr
       th(v-for='(key, j) in Object.keys(teams[0])',
-        v-if="['_id', '__v'].indexOf(key) === -1",
+        v-if="['_id', '__v', 'buildStatus'].indexOf(key) === -1",
         v-html="(key === 'isOnlineHackathon' ? `<ul><li class='avatar'>Online</li><li class='avatar'> | </li><li class='avatar'>In-person</li></ul>` : `<span>${columns[key]}</span>`)",
         v-bind:width="(key === 'screenshot' ? 120 : '')",
         v-on:click="(['name', 'isOnlineHackathon', 'lighthouse'].indexOf(key) !== -1 ? sortBy(key, ascending) : '')"
         scope="col", style="cursor: pointer;"
         )
       th(v-if="!team.screenshot", width="120", scope="col") Screenshot
+      
 
   tbody(v-if="picked === 'Online Only'")
     

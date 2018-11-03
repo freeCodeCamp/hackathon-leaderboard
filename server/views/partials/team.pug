@@ -1,16 +1,15 @@
-td(v-for='(key, j) in Object.keys(team)', v-if="['_id', '__v'].indexOf(key) === -1")
-  
+td(v-for='(key, j) in Object.keys(team)', v-if="['_id', '__v', 'buildStatus'].indexOf(key) === -1")
   span(v-if="key === 'name'", v-text="team[key]")
   a(v-if="key === 'githubRepository'", v-bind:href="team[key]", v-text="'link'")
   a(v-else-if="key === 'siteUrl'", v-bind:href="team[key]", v-text="'link'")
-  span(v-else-if="key === 'isOnlineHackathon'")
+  a(v-else-if="key === 'isOnlineHackathon'")
     ul
       li.avatar
         // team[key] === true means online-only
-        img(v-bind:src="(!team[key] ? '/images/circle-check.svg' : '/images/unchecked.svg')")
+        img(v-bind:src="(team[key] ? '/images/circle-check.svg' : '/images/unchecked.svg')")
       li.avatar(style="float:right")
         // if !team[key] means in-person
-        img(v-bind:src="(!team[key] ? '/images/unchecked.svg' : '/images/circle-check.svg')")
+        img(v-bind:src="(!team[key] ? '/images/circle-check.svg' : '/images/unchecked.svg')")
   ul(v-else-if="key === 'collaborators'")
     li.avatar(v-for="(member, k) in team[key]")
       img(:src="`https://github.com/${member}.png`", :title="member")
