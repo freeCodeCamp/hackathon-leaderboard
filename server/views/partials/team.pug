@@ -8,24 +8,23 @@ td(v-for="(key, j) in Object.keys(team)", v-if="key === 'buildStatus'")
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'name'")
   span(v-text="team[key]")
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'githubRepository'")
-  a(v-bind:href="team[key]", v-text="'link'")
+  a(v-bind:href="team[key]", v-text="'Visit repo'" target='_blank')
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'siteUrl'")
 
-  a(v-bind:href="team[key]", v-text="'link'")
+  a(v-bind:href="team[key]", v-text="'Visit app'" target='_blank')
 
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'isOnlineHackathon'")
   span(v-text="(team[key] ? 'Online' : 'In-person')")
-  
-td(v-for="(key, j) in Object.keys(team)", v-if="key === 'lighthouse'")
 
+td(v-for="(key, j) in Object.keys(team)", v-if="key === 'lighthouse'")
   span
     ul(v-if="team[key].length", v-for="(result, l) in team[key]")
       li(v-for="(metric, m) in Object.keys(result)", v-if="(l === team[key].length - 1 && metric !== '_id')")
         strong(v-text="metric+': '")
         span(v-if="metric === 'date'", v-text="new Date(result[metric]).getFullYear() + '/'+ new Date(result[metric]).getMonth()+'/'+ new Date(result[metric]).getDate()+' '+ new Date(result[metric]).getHours()+':'+ new Date(result[metric]).getMinutes()")
-        a(v-else-if="metric === 'screenshot'", v-bind:href="result[metric]", v-text="'link'")
+        a(v-else-if="metric === 'screenshot'", v-bind:href="result[metric]", v-text="'link'" target='_blank')
         span(v-else-if="metric !== 'date'", v-text="result[metric]")
-        
+
 
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'collaborators'")
 
