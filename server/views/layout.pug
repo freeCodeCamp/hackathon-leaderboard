@@ -16,6 +16,7 @@ html(lang='en')
             checked: false,
             picked: 'All',
             ascending: true,
+            buildStatuses: ['initial', 'pending', 'complete', 'failed'],
             columns: {
               buildStatus: 'Build Status',
               name: 'Team Name',
@@ -63,6 +64,9 @@ html(lang='en')
             self.teams.sort(function(a, b){
               var itemA, itemB;
               switch(key) {
+                case 'buildStatus':
+                  itemA = self.buildStatuses.indexOf(a.buildStatus);
+                  itemB = self.buildStatuses.indexOf(b.buildStatus);
                 case 'name':
                   itemA = a.name;
                   itemB = b.name;
@@ -73,11 +77,13 @@ html(lang='en')
                   break;*/
                 case 'lighthouse':
                   itemA = self.lighthousekeys.map(function(k){
+                    if (a.lighthouse.length === 0) return 0;
                     return a.lighthouse[a.lighthouse.length - 1].k;
                   }).reduce(function(acc, curr){
                     return acc + curr;
                   }) / 5;
                   itemB = self.lighthousekeys.map(function(k){
+                    if (b.lighthouse.length === 0) return 1;
                     return b.lighthouse[b.lighthouse.length - 1].k;
                   }).reduce(function(acc, curr){
                     return acc + curr;

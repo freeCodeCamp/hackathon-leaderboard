@@ -1,3 +1,5 @@
+
+
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'buildStatus'")
   // ['initial', 'pending', 'complete', 'failed']
   li.avatar
@@ -34,7 +36,7 @@ td(v-for="(key, j) in Object.keys(team)", v-if="key === 'lighthouse'")
 
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'collaborators'")
 
-  ul(v-if="key === 'collaborators'")
+  ul
     li.avatar(v-for="(member, k) in team[key]")
       img(:src="`https://github.com/${member}.png`", :title="member")
 
