@@ -28,10 +28,14 @@ body {
   color: #ffffff;
 }
 .btn-primary,
-.btn-primary:hover,
-.btn-primary:active,
-.btn-primary:visited,
-.btn-primary:focus {
+.btn-primary:visited {
   background-color: #006400 !important;
   border-color: #006400 !important;
+}
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary:focus {
+  color: #006400 !important;
+  background-color: transparent !important;
 }
