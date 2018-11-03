@@ -30,8 +30,11 @@ router.get('/signout', (req, res) => res.redirect('/api/auth/signout'));
 
 router.get('/team', ifNoUserRedirect(), async (req, res) => {
   if (req.user.teamId) {
-    const team = await Team.findById(req.user.teamId);
-    return res.render('manageTeam', { team });
+    return Team.findById(req.user.teamId)
+    .then((team) => {
+      if (!team) return res.render('createTeam');
+      return res.render('manageTeam', { team });
+    });
   }
   return res.render('createTeam');
 });

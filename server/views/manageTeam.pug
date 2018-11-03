@@ -37,6 +37,13 @@ block content
             .col
               input(type="radio", id="inPerson", value="In-person", v-model="picked")
               label(for="inPerson") The in-person hackathon in San Francisco
+          
+          .form-group.row
+            .col
+              button.btn.btn-primary(type='submit') Submit
+            .col
+              a.btn.btn-danger(role="button", v-on:click="removeTeam") Remove Team
+              small.form-text.danger Warning: Team removal cannot be undone.
 
       .container
         include partials/viewWebhooks.pug
