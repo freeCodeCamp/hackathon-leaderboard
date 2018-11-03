@@ -4,7 +4,8 @@ const { URL } = require('url');
 
 async function launchChromeAndRunLighthouse(url) {
   const browser = await puppeteer.launch({
-    defaultViewport: null
+    defaultViewport: null,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
 
   // lhr contains all sorts, like screen shots etc...
