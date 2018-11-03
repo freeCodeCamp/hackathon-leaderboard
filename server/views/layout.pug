@@ -15,15 +15,17 @@ html(lang='en')
             webhooks: '',
             checked: false,
             picked: 'All',
+            ascending: true,
             columns: {
               name: 'Team Name',
               githubRepository: 'Repo',
               siteUrl: 'Site',
-              isOnlineHackathon: 'Online-only',
+              isOnlineHackathon: 'Hackathon',
               lighthouse: 'Lighthouse',
               collaborators: 'Collaborators',
               screenshot: 'Screenshot'
-            }
+            },
+            lighthousekeys: [ 'seo', 'best-practices', 'accessibility', 'pwa', 'performance']
           } 
         },
         mounted: function() {
@@ -51,6 +53,58 @@ html(lang='en')
             .then((res) => {
               console.log(res.data);
               self.teams = res.data;
+            })
+          },
+          sortBy(key, ascending) {
+            var self = this;
+            self.ascending = !ascending;
+            self.teams.sort(function(a, b){
+              var itemA, itemB;
+              switch(key) {
+                case 'name':
+                  itemA = a.name;
+                  itemB = b.name;
+                  break;
+                /*case 'isOnlineHackathon':
+                  itemA = a.isOnlineHackathon;
+                  itemB = b.isOnlineHackathon;
+                  break;*/
+                case 'lighthouse':
+                  itemA = self.lighthousekeys.map(function(k){
+                    return a.lighthouse[a.lighthouse.length - 1].k;
+                  }).reduce(function(acc, curr){
+                    return acc + curr;
+                  });
+                  itemB = self.lighthousekeys.map(function(k){
+                    return a.lighthouse[a.lighthouse.length - 1].k;
+                  }).reduce(function(acc, curr){
+                    return acc + curr;
+                  });
+                  break;
+                default:
+                  
+              }
+              switch(ascending) {
+                case true:
+                  if (itemA < itemB) {
+                    return -1;
+                  }
+                  if (itemA > itemB) {
+                    return 1;
+                  }
+                  break;
+                case false:
+                  if (itemA < itemB) {
+                    return 1;
+                  }
+                  if (itemA > itemB) {
+                    return -1;
+                  }
+                  break;
+                default:
+                  return 0;
+              }
+              return 0;
             })
           },
           createFlash(type, message) {

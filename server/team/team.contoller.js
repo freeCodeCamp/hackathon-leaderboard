@@ -42,7 +42,7 @@ function create(req, res, next) {
     ? team.collaborators
     : team.collaborators
         .split(',')
-        .map(str => str.trim())
+        .map(str => str.trim().replace(/@/g, ''))
         .filter(Boolean);
 
   return Team.create({ ...team, collaborators })
@@ -89,7 +89,7 @@ function update(req, res) {
     ? team.collaborators
     : team.collaborators
         .split(',')
-        .map(str => str.trim())
+        .map(str => str.trim().replace(/@/g, ''))
         .filter(Boolean);
   team.collaborators = collaborators;
   Team.update(
