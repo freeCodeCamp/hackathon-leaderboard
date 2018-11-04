@@ -7,36 +7,36 @@ td(v-for="(key, j) in Object.keys(team)", v-if="key === 'buildStatus'")
     img(v-if="team[key] === 'failed'", :src="'/images/status_red.svg'")
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'name'")
   span(v-text="team[key]")
-td(v-for="(key, j) in Object.keys(team)", v-if="key === 'githubRepository'")
-  a(v-bind:href="team[key]", v-text="'Visit repo'" target='_blank')
-td(v-for="(key, j) in Object.keys(team)", v-if="key === 'siteUrl'")
 
-  a(v-bind:href="team[key]", v-text="'Visit app'" target='_blank')
+td
+  ul
+    li
+      strong(v-for="(key, j) in Object.keys(team)", v-if="key === 'githubRepository'") Code:
+       a(v-bind:href="team[key]", v-text="' Visit repo'" target='_blank')
+    li
+      strong(v-for="(key, j) in Object.keys(team)", v-if="key === 'siteUrl'") App:
+       a(v-bind:href="team[key]", v-text="' Visit app'" target='_blank')
+    li
+      strong(v-for="(key, j) in Object.keys(team)", v-if="key === 'isOnlineHackathon'") Type:
+      span(v-text="(team[key] ? ' Online' : ' In-person')")
 
-td(v-for="(key, j) in Object.keys(team)", v-if="key === 'isOnlineHackathon'")
-  span(v-text="(team[key] ? 'Online' : 'In-person')")
-  
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'lighthouse'")
-
   ul(v-if="team[key].length", v-for="(result, l) in team[key]")
     li.metric(v-for="(metric, m) in Object.keys(result)", v-if="(l === team[key].length - 1 && ['_id', 'screenshot'].indexOf(metric) === -1)")
       strong(v-text="(metric === 'date' ? 'Last run at' : metric)+': '")
       span(v-if="metric === 'date'", v-text="new Date(result[metric]).getFullYear() + '/'+ new Date(result[metric]).getMonth()+'/'+ new Date(result[metric]).getDate()+' '+ new Date(result[metric]).getHours()+':'+ new Date(result[metric]).getMinutes()")
       span(v-else-if="metric !== 'date'", v-text="result[metric]+'/100'")
-        
+
 
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'collaborators'")
-
   ul
     li.avatar(v-for="(member, k) in team[key]")
       a(:href="`https://github.com/${member}`" target="_blank")
         img(:src="`https://github.com/${member}.png`", :title="member")
 
 td
-
   a.screenshot(v-if="team.lighthouse.length > 0 && team.lighthouse[team.lighthouse.length - 1].screenshot", v-bind:href="team.lighthouse[team.lighthouse.length - 1].screenshot", target="_blank")
     img(v-bind:src="team.lighthouse[team.lighthouse.length - 1].screenshot", v-bind:title="'screenshot for team '+ team.name", v-bind:alt="'screenshot for team '+ team.name")
-
 
   a.screenshot(v-else-if="team.lighthouse.length", v-bind:href="'https://freecodecamp.org'", target="_blank")
     img(src="/images/fcc_mock_screenshot.png", v-bind:title="'screenshot'", v-bind:alt="'screenshot'", style="pointer-events: none;")
