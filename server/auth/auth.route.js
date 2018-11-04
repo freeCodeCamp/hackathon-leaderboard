@@ -18,7 +18,7 @@ router
 router
   .route('/github/callback')
   .get(
-    passport.authenticate('github', { failureRedirect: '/oh-no' }),
+    passport.authenticate('github', { failureRedirect: '/' }),
     authCtrl.handlePassportLogin
   );
 

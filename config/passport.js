@@ -3,8 +3,7 @@ const GitHubStrategy = require('passport-github').Strategy;
 const debug = require('debug');
 
 const log = debug('fcc:config:passport');
-const { host } = require('./config');
-
+const { host, isOpenForRegistrations } = require('./config');
 const {
   github: { id, secret }
 } = require('./config');
@@ -31,7 +30,10 @@ passport.use(
         githubProfile
       };
       log(githubUser);
-      User.findOrCreate(githubUser, (err, user) => cb(err, user));
+
+      return isOpenForRegistrations ?
+        User.findOrCreate(githubUser, (err, user) => cb(err, user)) :
+        User.findOne(githubUser, (err, user) => cb(err, user));
     }
   )
 );

@@ -21,6 +21,13 @@ api.use('/teams', teamRoutes);
 api.use('/webhook', webhookRoutes);
 
 router.get('/', (req, res) => {
+  if (config.isOpenForRegistrations) {
+    /* eslint-disable no-param-reassign */
+    req.session.regOpen = true;
+  } else {
+    req.session.regOpen = false;
+    /* eslint-enable no-param-reassign */
+  }
   if (req.user) {
     const { username } = req.user;
     return res.render('welcome', { username });
