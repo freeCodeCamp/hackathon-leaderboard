@@ -29,13 +29,14 @@ body {
 }
 .btn-primary,
 .btn-primary:visited {
-  background-color: #006400 !important;
+  color: #006400 !important;
+  background-color: #ffffff !important;
   border-color: #006400 !important;
 }
 .btn-primary:hover,
 .btn-primary:active,
 .btn-primary.active,
 .btn-primary:focus {
-  color: #006400 !important;
-  background-color: transparent !important;
+  color: #ffffff !important;
+  background-color: #006400 !important;
 }

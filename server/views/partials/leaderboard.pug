@@ -17,9 +17,11 @@ table.table(cellspacing="0px", width="100%", style="width: 100%;overflow:hidden;
       th(v-on:click="sortBy('name', ascending)", style="cursor: pointer;") Team Name
       th Repo
       th Site
-      th(width="200") Hackathon
+      th Hackathon
 
       th(v-on:click="sortBy('lighthouse', ascending)", style="cursor: pointer;") Lighthouse
+        p(style="margin:0; padding:0;")
+          small (higher is better)
       th Collaborators
       th(width="120") Screenshot
 

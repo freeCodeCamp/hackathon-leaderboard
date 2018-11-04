@@ -20,6 +20,9 @@ body {
   width: 33px;
   height: auto;
 }
+.metric {
+  text-align: left;
+}
 .screenshot {
   position: relative;
   width: 100%;
@@ -34,6 +37,9 @@ thead {
   top: 72px;
   background-color: #fff;
   z-index: 9;
+}
+td, th {
+  text-align: left;
 }
 td ul, th ul {
   padding-left: 0;
