@@ -9,13 +9,13 @@ html(lang='en')
     script(type="text/javascript").
       new Vue({
         el: '#vue',
-        data: function data() { return { 
+        data: function data() { return {
             teams: this.parseArr(!{JSON.stringify(teams)}),
             team: this.parseObj(!{JSON.stringify(team)}),
             webhooks: '',
             checked: false,
-            picked: 
-            (this.parseObj(!{JSON.stringify(team)}) !== '' ? 
+            picked:
+            (this.parseObj(!{JSON.stringify(team)}) !== '' ?
               (
                 this.parseObj(!{JSON.stringify(team)}).isOnlineHackathon ?
                 'Online Only' :
@@ -35,12 +35,12 @@ html(lang='en')
             },
             lighthousekeys: [ 'seo', 'best-practices', 'accessibility', 'pwa', 'performance'],
             teamsInterval: ''
-          } 
+          }
         },
         mounted: function() {
           var self = this;
           self.log();
-          if (self.teams && self.teams !== '' && self.teams !== ['']) {
+          if (self.teams && self.teams !== '' && self.teams !== []) {
             self.getTeams();
             self.startTeamsPolling();
             self.sortBy('lighthouse', true);
@@ -59,7 +59,7 @@ html(lang='en')
             return obj
           },
           parseArr: function(arr){
-            if (!arr) return ['']
+            if (!arr) return []
             return arr;
           },
           startTeamsPolling() {
@@ -90,7 +90,7 @@ html(lang='en')
             self.ascending = !ascending;
             self.teams.sort(function(a, b){
               // a is team
-              
+
               var itemA, itemB;
               switch(key) {
                 case 'buildStatus':
@@ -120,7 +120,7 @@ html(lang='en')
                   //console.log(itemA,itemB)
                   break;
                 default:
-                  
+
               }
               switch(ascending) {
                 case true:
@@ -195,7 +195,7 @@ html(lang='en')
                     return self.createFlash('danger', 'Something went wrong '+msg+'ing your team, more info in the console')
                   })
                 }
-                
+
               } else {
                 return self.createFlash('warning', 'Something went wrong '+msg+'ing your team')
               }
@@ -207,7 +207,7 @@ html(lang='en')
               console.log(self.webhooks)
             }
             axios.get(`/api/teams/webhooks/${self.team._id}`)
-            .then(function(result) { 
+            .then(function(result) {
               console.log(result.data.webhook)
               self.webhooks = result.data.webhook;
             })
@@ -225,7 +225,7 @@ html(lang='en')
             }
           },
           log: function() {
-            console.log(Object.keys(this.teams[0]))
+            console.log(Object.keys(this.teams[0] || {}))
           }
-        } 
+        }
       })
