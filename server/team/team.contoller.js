@@ -73,7 +73,7 @@ function list(req, res) {
     .lean()
     .then((teams) => {
       if (teams.length === 0) {
-        return res.status(200).json(['']);
+        return res.status(200).json([]);
       }
       return res.status(200).json(teams);
     });
@@ -82,7 +82,7 @@ function list(req, res) {
 function single(req, res) {
   return Team.findOne({ _id: req.params.teamId }).then((team) => {
     if (!team) {
-      return res.status(200).json(['']);
+      return res.status(200).json([]);
     }
     return res.status(200).json(team);
   });

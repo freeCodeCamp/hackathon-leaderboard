@@ -34,7 +34,8 @@ html(lang='en')
               screenshot: 'Screenshot'
             },
             lighthousekeys: [ 'seo', 'best-practices', 'accessibility', 'pwa', 'performance'],
-            teamsInterval: ''
+            teamsInterval: '',
+            disabled: false
           }
         },
         mounted: function() {
@@ -162,6 +163,7 @@ html(lang='en')
               axiosurl = `/api/teams/${self.team._id}`
               msg = 'updat'
             }
+            self.disabled = true;
             var createTeamForm = document.getElementById('create-team-form') || document.getElementById('update-team-form');
             var flashContainer = document.getElementById('flash-container');
             var actionContainer = document.getElementById('team-form-or-webhook');
@@ -188,6 +190,9 @@ html(lang='en')
               } else {
                 return self.createFlash('warning', 'Something went wrong '+msg+'ing your team')
               }
+            })
+            .catch(function(){
+              self.createFlash('warning', 'Something went wrong '+msg+'ing your team. Collaborators may not belong to more than one team.');
             })
           },
           removeTeam() {

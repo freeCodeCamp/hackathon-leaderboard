@@ -40,9 +40,9 @@ block content
 
           .form-group.row
             .col
-              button.btn.btn-primary(type='submit') Submit
+              button.btn.btn-primary(v-bind:disabled="disabled", type='submit') Submit
             .col
-              a.btn.btn-danger(role="button", v-on:click="removeTeam") Remove Team
+              a.btn.btn-danger(v-bind:class="disabled ? 'disabled' : ''", role="button", v-on:click="removeTeam") Remove Team
               small.form-text.danger Warning: Team removal cannot be undone.
 
       .container

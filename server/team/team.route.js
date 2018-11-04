@@ -2,7 +2,7 @@ const express = require('express');
 const validate = require('express-validation');
 
 const { ifNoUserRedirect } = require('../middlewares/user');
-const { ifNoBody400, ifNotOwnTeam400 } = require('../middlewares/util');
+const { ifNoBody400, ifNotOwnTeam400, ifDuplicate400 } = require('../middlewares/util');
 const teamCtrl = require('./team.contoller');
 const validators = require('./team.validation');
 
@@ -13,12 +13,20 @@ router
   /** GET /api/teams - Get list of users */
   .get(teamCtrl.list)
   /** POST /api/teams - Create new team */
-  .post(ifNoUserRedirect(), ifNoBody400, validate(validators.createTeam), teamCtrl.create);
+  .post(
+    ifNoUserRedirect(),
+    ifNoBody400,
+    ifDuplicate400,
+    validate(validators.createTeam),
+    teamCtrl.create);
 
 router
   .route('/:teamId')
   .get(teamCtrl.single)
-  .post(ifNoUserRedirect(), ifNoBody400, validate(validators.createTeam), teamCtrl.update);
+  .post(ifNoUserRedirect(),
+  ifNoBody400,
+  ifDuplicate400,
+  validate(validators.createTeam), teamCtrl.update);
 
 router
   .route('/delete/:teamId')
