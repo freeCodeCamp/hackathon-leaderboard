@@ -18,7 +18,7 @@ td
        a(v-bind:href="team[key]", v-text="' Visit app'" target='_blank')
     li
       strong(v-for="(key, j) in Object.keys(team)", v-if="key === 'isOnlineHackathon'") Type:
-      span(v-text="(team[key] ? ' Online' : ' In-person')")
+        span(v-text="(team[key] ? ' Online' : ' In-person')")
 
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'lighthouse'")
   ul(v-if="team[key].length", v-for="(result, l) in team[key]")
