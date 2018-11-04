@@ -12,7 +12,7 @@ html(lang='en')
         data: function data() { return {
             teams: this.parseArr(!{JSON.stringify(teams)}),
             team: this.parseObj(!{JSON.stringify(team)}),
-            webhooks: '',
+            webhooks: this.parseObj(!{JSON.stringify(webhooks)}),
             checked: false,
             picked:
             (this.parseObj(!{JSON.stringify(team)}) !== '' ?
@@ -44,9 +44,6 @@ html(lang='en')
             self.getTeams();
             self.startTeamsPolling();
             self.sortBy('lighthouse', true);
-          }
-          if (self.team && self.team !== '' && self.team !== ['']) {
-            self.renderWebhooks();
           }
         },
         beforeDestroy() {
@@ -185,30 +182,12 @@ html(lang='en')
               if (parseInt(status, 10) === 200) {
                 self.createFlash('success', 'Your team has been '+msg+'ed!<br><br>');
                 if (msg === 'creat') {
-                  axios.post(`/api/teams/webhooks/${response.data.teamId}`)
-                  .then(() => {
-                    return window.location.href = '/team';
-                  })
-                  .catch(function(error){
-                    console.error(error);
-                    return self.createFlash('danger', 'Something went wrong '+msg+'ing your team, more info in the console')
-                  })
+                  setTimeout(function() {window.location.href = '/team';}, 1000 * 60 * 3) // three seconds
                 }
 
               } else {
                 return self.createFlash('warning', 'Something went wrong '+msg+'ing your team')
               }
-            })
-          },
-          renderWebhooks() {
-            var self = this;
-            if (self.webhooks) {
-              console.log(self.webhooks)
-            }
-            axios.get(`/api/teams/webhooks/${self.team._id}`)
-            .then(function(result) {
-              console.log(result.data.webhook)
-              self.webhooks = result.data.webhook;
             })
           },
           removeTeam() {

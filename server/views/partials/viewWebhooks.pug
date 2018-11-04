@@ -1,4 +1,4 @@
-div(v-if="webhooks && webhooks !== ''") #{JSON.stringify(webhooks, null, 2)}
+div(v-if="webhooks && webhooks !== ''")
   div.webhook-display
     h5.webhook-title(v-text="webhooks.name + ' Webhook'")
     pre

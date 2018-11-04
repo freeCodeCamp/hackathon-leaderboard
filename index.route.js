@@ -1,4 +1,5 @@
 const express = require('express');
+const { pick } = require('lodash');
 
 const config = require('./config/config');
 const userRoutes = require('./server/user/user.route');
@@ -8,6 +9,7 @@ const webhookRoutes = require('./server/webhooks/webhook.route');
 const { ifNoUserRedirect } = require('./server/middlewares/user');
 
 const Team = require('./server/team/team.model');
+const Webhook = require('./server/webhooks/webhook.model');
 
 const api = express.Router(); // eslint-disable-line new-cap
 const router = express.Router(); // eslint-disable-line new-cap
@@ -28,13 +30,16 @@ router.get('/', (req, res) => {
 
 router.get('/signout', (req, res) => res.redirect('/api/auth/signout'));
 
-router.get('/team', ifNoUserRedirect(), async (req, res) => {
-  if (req.user.teamId) {
-    return Team.findById(req.user.teamId)
-    .then((team) => {
+router.get('/team', ifNoUserRedirect(), (req, res, next) => {
+  const { teamId } = req.user;
+  if (teamId) {
+    return Promise.all([
+      Team.findById(teamId),
+      Webhook.findOne({ belongsTo: teamId, name: 'netlify' })
+    ]).then(([team, webhooks]) => {
       if (!team) return res.render('createTeam');
-      return res.render('manageTeam', { team });
-    });
+      return res.render('manageTeam', { team, webhooks: pick(webhooks, ['name', 'webhook', 'secret']) });
+    }).catch(next);
   }
   return res.render('createTeam');
 });

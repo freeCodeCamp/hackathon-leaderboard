@@ -13,7 +13,7 @@ chai.use(sinonChai);
 
 const team = {
   name: 'freeCodeCamp',
-  collaborators: 'Bouncey, raisedadead',
+  collaborators: ['Bouncey', '@raisedadead'],
   githubRepository: 'https://github.com/freeCodeCamp/freeeCodeCamp',
   siteUrl: 'https://www.freecodecamp.org',
   isOnlineHackathon: true
@@ -48,7 +48,7 @@ describe('# Team API', () => {
       Webhook.create.restore();
     });
 
-    it('should call `create` on the Team model', () => {
+    it('should call `create` on the Team model', (done) => {
       const { create } = teamCtrl;
       const request = {
         body: team,
@@ -57,16 +57,18 @@ describe('# Team API', () => {
       const req = mockReq(request);
       const res = mockRes();
 
-      create(req, res).then(() => {
-        expect(Team.create).to.be.calledWith({
-          ...team,
-          collaborators: ['Bouncey', 'raisedadead']
-        });
-      });
+      create(req, res)
+        .then(() => {
+          expect(Team.create).to.be.calledWith({
+            ...team,
+            collaborators: ['Bouncey', 'raisedadead']
+          });
+          done();
+        })
+        .catch(done);
     });
-    /*
     it('should call `update` on the User model with the team id', (done) => {
-      const { update } = teamCtrl;
+      const { create } = teamCtrl;
       const request = {
         body: team,
         user
@@ -74,12 +76,13 @@ describe('# Team API', () => {
       const req = mockReq(request);
       const res = mockRes();
 
-      update(req, res).then(() => {
-        expect(User.update).to.be.calledWith(user, { teamId: newTeam._id });
-        done();
-      });
+      create(req, res)
+        .then(() => {
+          expect(User.update).to.be.calledWith(user, { teamId: newTeam._id });
+          done();
+        })
+        .catch(done);
     });
-    */
     it('should acknowledge a successful team creation', (done) => {
       const { create } = teamCtrl;
       const request = {
@@ -89,12 +92,14 @@ describe('# Team API', () => {
       const req = mockReq(request);
       const res = mockRes();
 
-      create(req, res).then(() => {
-        const jsonCalledWith = res.json.getCalls()[0].args[0];
+      create(req, res)
+        .then(() => {
+          const jsonCalledWith = res.json.getCalls()[0].args[0];
 
-        expect(jsonCalledWith.acknowledged).to.equal(true);
-        done();
-      });
+          expect(jsonCalledWith.acknowledged).to.equal(true);
+          done();
+        })
+        .catch(done);
     });
 
     it('should acknowledge a failed attempt at creating a team', (done) => {
@@ -115,12 +120,14 @@ describe('# Team API', () => {
       const req = mockReq(request);
       const res = mockRes();
 
-      create(req, res).then(() => {
-        expect(res.status).to.be.calledWith(500);
-        expect(res.json).to.be.calledWith({ acknowledged: false });
-        expect(User.update.called).to.equal(false);
-        done();
-      });
+      create(req, res)
+        .then(() => {
+          expect(res.status).to.be.calledWith(500);
+          expect(res.json).to.be.calledWith({ acknowledged: false });
+          expect(User.update.called).to.equal(false);
+          done();
+        })
+        .catch(done);
     });
 
     it('should not call User.update if the request throws', (done) => {
@@ -142,15 +149,17 @@ describe('# Team API', () => {
       const res = mockRes();
       const next = sinon.spy();
 
-      create(req, res, next).then(() => {
-        expect(User.update.called).to.equal(false);
-        expect(next.calledOnce).to.equal(true);
-        done();
-      });
+      create(req, res, next)
+        .then(() => {
+          expect(User.update.called).to.equal(false);
+          expect(next.calledOnce).to.equal(true);
+          done();
+        })
+        .catch(done);
     });
-    /*
+
     it('creates two new webhooks', (done) => {
-      const { newWebhooks } = teamCtrl;
+      const { create } = teamCtrl;
       const request = {
         body: team,
         user
@@ -159,11 +168,12 @@ describe('# Team API', () => {
       const req = mockReq(request);
       const res = mockRes();
 
-      newWebhooks(req, res).then(() => {
-        expect(Webhook.create.calledTwice).to.equal(true);
-        done();
-      });
+      create(req, res)
+        .then(() => {
+          expect(Webhook.create.calledTwice).to.equal(true);
+          done();
+        })
+        .catch(done);
     });
-    */
   });
 });
