@@ -17,13 +17,12 @@ td(v-for="(key, j) in Object.keys(team)", v-if="key === 'isOnlineHackathon'")
   span(v-text="(team[key] ? 'Online' : 'In-person')")
   
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'lighthouse'")
-  span
-    ul(v-if="team[key].length", v-for="(result, l) in team[key]")
-      li(v-for="(metric, m) in Object.keys(result)", v-if="(l === team[key].length - 1 && metric !== '_id')")
-        strong(v-text="metric+': '")
-        span(v-if="metric === 'date'", v-text="new Date(result[metric]).getFullYear() + '/'+ new Date(result[metric]).getMonth()+'/'+ new Date(result[metric]).getDate()+' '+ new Date(result[metric]).getHours()+':'+ new Date(result[metric]).getMinutes()")
-        a(v-else-if="metric === 'screenshot'", v-bind:href="result[metric]", v-text="'link'" target='_blank')
-        span(v-else-if="metric !== 'date'", v-text="result[metric]")
+
+  ul(v-if="team[key].length", v-for="(result, l) in team[key]")
+    li(v-for="(metric, m) in Object.keys(result)", v-if="(l === team[key].length - 1 && ['_id', 'screenshot'].indexOf(metric) === -1)")
+      strong(v-text="metric+': '")
+      span(v-if="metric === 'date'", v-text="new Date(result[metric]).getFullYear() + '/'+ new Date(result[metric]).getMonth()+'/'+ new Date(result[metric]).getDate()+' '+ new Date(result[metric]).getHours()+':'+ new Date(result[metric]).getMinutes()")
+      span(v-else-if="metric !== 'date'", v-text="result[metric]")
         
 
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'collaborators'")
@@ -35,9 +34,9 @@ td(v-for="(key, j) in Object.keys(team)", v-if="key === 'collaborators'")
 
 td
 
-  span.screenshot(v-if="team.lighthouse.length > 0 && team.lighthouse[team.lighthouse.length - 1].screenshot")
+  a.screenshot(v-if="team.lighthouse.length > 0 && team.lighthouse[team.lighthouse.length - 1].screenshot", v-bind:href="team.lighthouse[team.lighthouse.length - 1].screenshot", target="_blank")
     img(v-bind:src="team.lighthouse[team.lighthouse.length - 1].screenshot", v-bind:title="'screenshot for team '+ team.name", v-bind:alt="'screenshot for team '+ team.name")
 
 
-  span.screenshot(v-else-if="team.lighthouse.length")
-    img(src="/images/fcc_mock_screenshot.png", v-bind:title="'screenshot'", v-bind:alt="'screenshot'")
+  a.screenshot(v-else-if="team.lighthouse.length", v-bind:href="'https://freecodecamp.org'", target="_blank")
+    img(src="/images/fcc_mock_screenshot.png", v-bind:title="'screenshot'", v-bind:alt="'screenshot'", style="pointer-events: none;")

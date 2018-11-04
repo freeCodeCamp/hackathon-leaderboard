@@ -23,6 +23,7 @@ body {
 .screenshot {
   position: relative;
   width: 100%;
+  display: block;
 }
 .screenshot img {
   width: 100%;
