@@ -72,7 +72,6 @@ html(lang='en')
               axios.get(`/api/teams/${self.team._id}`)
               .then((res) => {
                 self.team = res.data;
-                self.sortBy(self.sortKey, !self.ascending);
               })
             }
           },
@@ -81,6 +80,7 @@ html(lang='en')
             axios.get('/api/teams')
             .then((res) => {
               self.teams = res.data;
+              self.sortBy(self.sortKey, !self.ascending);
             })
           },
           sortBy(key, ascending) {
