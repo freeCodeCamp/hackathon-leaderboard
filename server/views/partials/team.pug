@@ -30,7 +30,7 @@ td(v-for="(key, j) in Object.keys(team)", v-if="key === 'lighthouse'")
       span(v-text="result[metric]+'/100'")
     li.metric(v-for="(metric, m) in Object.keys(result)",v-if="(l === team[key].length - 1 && metric === 'date')")
       strong(v-text="'Last run at: '")
-      span(v-text="new Date(result[metric]).getFullYear() + '/'+ new Date(result[metric]).getMonth()+'/'+ new Date(result[metric]).getDate()+' '+ new Date(result[metric]).getHours()+':'+ new Date(result[metric]).getMinutes()")
+      span(v-text="new Date(result[metric]).getFullYear() + '/'+ new Date(result[metric]).getMonth()+'/'+ new Date(result[metric]).getDate()+' '+ new Date(result[metric]).getHours()+':'+ (new Date(result[metric]).getMinutes() < 10 ? '0' : '') + new Date(result[metric]).getMinutes()")
 
 
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'collaborators'")
