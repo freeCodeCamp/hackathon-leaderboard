@@ -22,7 +22,7 @@ html(lang='en')
                 'In-person'
               ) : 'In-person'),
             ascending: true,
-            buildStatuses: ['initial', 'pending', 'complete', 'failed'],
+            buildStatuses: ['complete', 'pending', 'initial', 'failed'],
             columns: {
               buildStatus: 'Build Status',
               name: 'Team Name',
@@ -35,6 +35,7 @@ html(lang='en')
             },
             lighthousekeys: [ 'seo', 'best-practices', 'accessibility', 'pwa', 'performance'],
             teamsInterval: '',
+            sortKey: 'lighthouse',
             disabled: false
           }
         },
@@ -44,7 +45,6 @@ html(lang='en')
           if (self.teams && self.teams !== '' && self.teams !== []) {
             self.getTeams();
             self.startTeamsPolling();
-            self.sortBy('lighthouse', true);
           }
         },
         beforeDestroy() {
@@ -72,6 +72,7 @@ html(lang='en')
               axios.get(`/api/teams/${self.team._id}`)
               .then((res) => {
                 self.team = res.data;
+                self.sortBy(self.sortKey, !self.ascending);
               })
             }
           },
@@ -83,9 +84,9 @@ html(lang='en')
             })
           },
           sortBy(key, ascending) {
-            console.log(key, ascending)
             var self = this;
             self.ascending = !ascending;
+            self.sortKey = key;
             self.teams.sort(function(a, b){
               // a is team
 
@@ -94,6 +95,7 @@ html(lang='en')
                 case 'buildStatus':
                   itemA = self.buildStatuses.indexOf(a.buildStatus);
                   itemB = self.buildStatuses.indexOf(b.buildStatus);
+                  break;
                 case 'name':
                   itemA = a.name;
                   itemB = b.name;
@@ -117,8 +119,9 @@ html(lang='en')
                   }) / 5;
                   break;
                 default:
-
+                  return 0;
               }
+
               switch(ascending) {
                 case true:
                   if (itemA < itemB) {
