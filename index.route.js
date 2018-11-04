@@ -40,6 +40,11 @@ router.get('/team', ifNoUserRedirect(), async (req, res) => {
 });
 
 function provideRoutes(app) {
+  app.use((req, res, next) => {
+    // eslint-disable-next-line no-param-reassign
+    res.locals.session = req.session;
+    next();
+  });
   app.use('/api', api);
   app.use(router);
   return;

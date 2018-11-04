@@ -48,11 +48,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use((req, res, next) => {
-  // eslint-disable-next-line no-param-reassign
-  res.locals.session = req.session;
-  next();
-});
+
 setViewEngine(app);
 provideRoutes(app);
 provideErrorMiddleware(app);
