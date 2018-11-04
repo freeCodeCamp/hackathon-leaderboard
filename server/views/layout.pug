@@ -9,13 +9,13 @@ html(lang='en')
     script(type="text/javascript").
       new Vue({
         el: '#vue',
-        data: function data() { return {
+        data: function data() { return { 
             teams: this.parseArr(!{JSON.stringify(teams)}),
             team: this.parseObj(!{JSON.stringify(team)}),
             webhooks: '',
             checked: false,
-            picked:
-            (this.parseObj(!{JSON.stringify(team)}) !== '' ?
+            picked: 
+            (this.parseObj(!{JSON.stringify(team)}) !== '' ? 
               (
                 this.parseObj(!{JSON.stringify(team)}).isOnlineHackathon ?
                 'Online Only' :
@@ -33,19 +33,25 @@ html(lang='en')
               collaborators: 'Collaborators',
               screenshot: 'Screenshot'
             },
-            lighthousekeys: [ 'seo', 'best-practices', 'accessibility', 'pwa', 'performance']
-          }
+            lighthousekeys: [ 'seo', 'best-practices', 'accessibility', 'pwa', 'performance'],
+            teamsInterval: ''
+          } 
         },
         mounted: function() {
           var self = this;
           self.log();
           if (self.teams && self.teams !== '' && self.teams !== ['']) {
             self.getTeams();
+            self.startTeamsPolling();
             self.sortBy('lighthouse', true);
           }
           if (self.team && self.team !== '' && self.team !== ['']) {
             self.renderWebhooks();
           }
+        },
+        beforeDestroy() {
+          var self = this;
+          clearInterval(self.teamsInterval);
         },
         methods: {
           parseObj: function(obj){
@@ -55,6 +61,21 @@ html(lang='en')
           parseArr: function(arr){
             if (!arr) return ['']
             return arr;
+          },
+          startTeamsPolling() {
+            var self = this;
+            self.interval = setInterval(function(){
+              self.getTeams();
+            }, 30000);
+          },
+          getTeam() {
+            var self = this;
+            if (self.team && self.team !== '') {
+              axios.get(`/api/teams/${self.team._id}`)
+              .then((res) => {
+                self.team = res.data;
+              })
+            }
           },
           getTeams() {
             var self = this;
@@ -68,6 +89,8 @@ html(lang='en')
             var self = this;
             self.ascending = !ascending;
             self.teams.sort(function(a, b){
+              // a is team
+              
               var itemA, itemB;
               switch(key) {
                 case 'buildStatus':
@@ -77,10 +100,10 @@ html(lang='en')
                   itemA = a.name;
                   itemB = b.name;
                   break;
-                /*case 'isOnlineHackathon':
+                case 'isOnlineHackathon':
                   itemA = a.isOnlineHackathon;
                   itemB = b.isOnlineHackathon;
-                  break;*/
+                  break;
                 case 'lighthouse':
                   itemA = self.lighthousekeys.map(function(k){
                     if (a.lighthouse.length === 0) return 0;
@@ -94,10 +117,10 @@ html(lang='en')
                   }).reduce(function(acc, curr){
                     return acc + curr;
                   }) / 5;
-                  console.log(itemA,itemB)
+                  //console.log(itemA,itemB)
                   break;
                 default:
-
+                  
               }
               switch(ascending) {
                 case true:
@@ -172,7 +195,7 @@ html(lang='en')
                     return self.createFlash('danger', 'Something went wrong '+msg+'ing your team, more info in the console')
                   })
                 }
-
+                
               } else {
                 return self.createFlash('warning', 'Something went wrong '+msg+'ing your team')
               }
@@ -184,7 +207,7 @@ html(lang='en')
               console.log(self.webhooks)
             }
             axios.get(`/api/teams/webhooks/${self.team._id}`)
-            .then(function(result) {
+            .then(function(result) { 
               console.log(result.data.webhook)
               self.webhooks = result.data.webhook;
             })
@@ -204,5 +227,5 @@ html(lang='en')
           log: function() {
             console.log(Object.keys(this.teams[0]))
           }
-        }
+        } 
       })

@@ -15,7 +15,7 @@ td(v-for="(key, j) in Object.keys(team)", v-if="key === 'siteUrl'")
 
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'isOnlineHackathon'")
   span(v-text="(team[key] ? 'Online' : 'In-person')")
-
+  
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'lighthouse'")
   span
     ul(v-if="team[key].length", v-for="(result, l) in team[key]")
@@ -24,7 +24,7 @@ td(v-for="(key, j) in Object.keys(team)", v-if="key === 'lighthouse'")
         span(v-if="metric === 'date'", v-text="new Date(result[metric]).getFullYear() + '/'+ new Date(result[metric]).getMonth()+'/'+ new Date(result[metric]).getDate()+' '+ new Date(result[metric]).getHours()+':'+ new Date(result[metric]).getMinutes()")
         a(v-else-if="metric === 'screenshot'", v-bind:href="result[metric]", v-text="'link'" target='_blank')
         span(v-else-if="metric !== 'date'", v-text="result[metric]")
-
+        
 
 td(v-for="(key, j) in Object.keys(team)", v-if="key === 'collaborators'")
 
