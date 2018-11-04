@@ -96,3 +96,14 @@ th > ul {
   display: flex;
   justify-content: space-around;
 }
+
+.lg-text {
+  font-size: 1.3rem;
+}
+
+.webhook-what-next-toc > li {
+  list-style-type: disclosure-closed;
+}
+.webhook-what-next-toc ul > li {
+  list-style-type: disc;
+}

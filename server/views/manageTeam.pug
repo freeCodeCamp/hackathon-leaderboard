@@ -9,9 +9,9 @@ block content
     main
       .container#flash-container
       .container
-        h1 Manage #{team.name}!
+        h3 Manage #{team.name}!
       .container
-        
+
         form#update-team-form(v-on:submit='handleFormSubmit')
           .form-group
             label(for='team-name') Team Name
@@ -28,16 +28,16 @@ block content
             label(for='team-collab') Team Collaborators
             input#team-collab.form-control(type='text', aria-describedby='team-collab-help', placeholder= team.collaborators.join(', '), value= team.collaborators.join(', '), name='collaborators')
             small#team-collab-help.form-text.text-muted A comma separated list of Github usernames
-          
+
           .form-group.form-check
             legend Which hackathon are you participating in?
             .col
               input#isOnLine(type="radio", value="Online Only", v-model="picked",  name="isOnlineHackathon", checked= team.isOnlineHackathon, aria-checked= team.isOnlineHackathon, required)
-              label(for="isOnLine") The online hackathon  
+              label(for="isOnLine") The online hackathon
             .col
               input(type="radio", id="inPerson", value="In-person", v-model="picked", name="isOnlineHackathon", checked= !team.isOnlineHackathon, aria-checked= !team.isOnlineHackathon, required)
               label(for="inPerson") The in-person hackathon in San Francisco
-          
+
           .form-group.row
             .col
               button.btn.btn-primary(type='submit') Submit
@@ -46,17 +46,45 @@ block content
               small.form-text.danger Warning: Team removal cannot be undone.
 
       .container
+        h2 What next?
+        ul.webhook-what-next-toc
+          li
+            a(href='#netlify-webhook') Configure Webhook on Netlify
+          li
+            a(href='#troubleshoot') Troubleshooting
+            ul
+              li
+                a(href='#score-hang') My score is not updating
+      br
+      .container
         include partials/viewWebhooks.pug
-        h1 Instructions
+        br
+        h3#netlify-webhook Instructions
+        p
+          | This webhook triggers a lighthouse test on your teams site, the latest results of which are available on the
+          a(href='/') &thinsp; home page
+          | . Follow the steps below to correctly register your webhook with Netlify.
+        br
         ol
-          li Click on 'Site settings' in your dashboard.
-            img(src="/images/1.png", width="100%", style="height: auto;margin: 0 0 20px 0;")
-          
-          li From the Settings page, click on 'Build & Deploy'.
-            img(src="/images/2.png", width="100%", style="height: auto;margin: 0 0 20px 0;")
-          li Under Deploy notifications, click to expand the 'Add notification' menu.
-            img(src="/images/3.png", width="100%", style="height: auto;margin: 0 0 20px 0;")
-          li Choose 'Outgoing webhook'.
-            img(src="/images/4.png", width="100%", style="height: auto;margin: 0 0 20px 0;")
-          li Choose the 'Deploy succeeded' Event and enter the webhook URL and secret.
-            img(src="/images/5.png", width="100%", style="height: auto;margin: 0 0 20px 0;")
+          li.lg-text Click on 'Site settings' from your Netlify dashboard.
+            img(alt='', src="/images/1.png", width="100%", style="height: auto;margin: 0 0 20px 0;")
+          li.lg-text From the Settings page, click on 'Build & Deploy'.
+            img(alt='', src="/images/2.png", width="100%", style="height: auto;margin: 0 0 20px 0;")
+          li.lg-text Under Deploy notifications, click to expand the 'Add notification' menu.
+            img(alt='', src="/images/3.png", width="100%", style="height: auto;margin: 0 0 20px 0;")
+          li.lg-text Choose 'Outgoing webhook'.
+            img(alt='', src="/images/4.png", width="100%", style="height: auto;margin: 0 0 20px 0;")
+          li.lg-text Choose the 'Deploy succeeded' Event and enter the webhook URL and secret.
+            img(alt='', src="/images/5.png", width="100%", style="height: auto;margin: 0 0 20px 0;")
+        br
+        h3#troubleshoot Troubleshooting
+        br
+        h4#score-hang It seems like my teams lighthouse score has hung.
+        br
+        ol
+          li.lg-text Click on 'Deploys' from your Netlify dashboard
+            img(alt='', src='/images/trigger-1.png', width="100%", style="height: auto;margin: 0 0 20px 0;")
+          li.lg-text Click on the 'Trigger deploy' dropdown button in the deploys panel
+            img(alt='', src='/images/trigger-2.png', width="100%", style="height: auto;margin: 0 0 20px 0;")
+          li.lg-text Select 'Deploy site' from the dropdown menu
+            img(alt='', src='/images/trigger-3.png', width="100%", style="height: auto;margin: 0 0 20px 0;")
