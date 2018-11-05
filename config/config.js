@@ -25,7 +25,8 @@ const envVarsSchema = Joi.object({
   GITHUB_CLIENT_ID: Joi.string().required(),
   GITHUB_CLIENT_SECRET: Joi.string().required(),
   HOST: Joi.string().required(),
-  OPEN_FOR_REGISTRATION: Joi.boolean().default(true)
+  OPEN_FOR_REGISTRATION: Joi.boolean().default(true),
+  OPEN_FOR_SUBMISSIONS: Joi.boolean().default(true)
 })
   .unknown()
   .required();
@@ -50,7 +51,8 @@ const config = {
     id: envVars.GITHUB_CLIENT_ID,
     secret: envVars.GITHUB_CLIENT_SECRET
   },
-  isOpenForRegistrations: envVars.OPEN_FOR_REGISTRATION
+  isOpenForRegistrations: envVars.OPEN_FOR_REGISTRATION,
+  isOpenForSubmissions: envVars.OPEN_FOR_SUBMISSIONS
 };
 
 module.exports = config;

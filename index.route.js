@@ -28,6 +28,13 @@ router.get('/', (req, res) => {
     req.session.regOpen = false;
     /* eslint-enable no-param-reassign */
   }
+  if (config.isOpenForSubmissions) {
+    /* eslint-disable no-param-reassign */
+    req.session.submissionsOpen = true;
+  } else {
+    req.session.submissionsOpen = false;
+    /* eslint-enable no-param-reassign */
+  }
   if (req.user) {
     const { username } = req.user;
     return res.render('welcome', { username });
@@ -38,6 +45,9 @@ router.get('/', (req, res) => {
 router.get('/signout', (req, res) => res.redirect('/api/auth/signout'));
 
 router.get('/team', ifNoUserRedirect(), (req, res, next) => {
+  if (!config.isOpenForSubmissions) {
+    return res.redirect('/');
+  }
   const { teamId } = req.user;
   if (teamId) {
     return Promise.all([

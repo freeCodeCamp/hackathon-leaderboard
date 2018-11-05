@@ -1,6 +1,6 @@
 nav#mainNav.navbar.navbar-custom.navbar-expand-md.fixed-top.text-uppercase
   .container
-    a.navbar-brand.js-scroll-trigger(href='/') 
+    a.navbar-brand.js-scroll-trigger(href='/')
       img.img-responsive(src='https://s3.amazonaws.com/freecodecamp/freecodecamp_logo.svg', alt='learn to code javascript at freeCodeCamp logo')
     button.navbar-toggler.navbar-toggler-right.text-uppercase.rounded(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
       | Menu
@@ -13,7 +13,8 @@ nav#mainNav.navbar.navbar-custom.navbar-expand-md.fixed-top.text-uppercase
           li.nav-item.mx-0.mx-lg-1
             a.nav-link.py-3.px-0.px-lg-3.rounded.js-scroll-trigger(href=`https://github.com/login/oauth/authorize?scope=user:email&client_id=${githubClientId}`) Sign in with GitHub
         else
-          li.nav-item.mx-0.mx-lg-1
-            a.nav-link.py-3.px-0.px-lg-3.rounded(href=`/team`) Team
+          if (session.submissionsOpen)
+            li.nav-item.mx-0.mx-lg-1
+              a.nav-link.py-3.px-0.px-lg-3.rounded(href=`/team`) Team
           li.nav-item.mx-0.mx-lg-1
             a.nav-link.py-3.px-0.px-lg-3.rounded(href= `/signout`) Sign out
