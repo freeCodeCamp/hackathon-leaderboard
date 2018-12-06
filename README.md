@@ -31,6 +31,7 @@ Start server:
 ```sh
 # Start server
 yarn start
+```
 
 # Testing Web Service locally with localtunnel
 
