@@ -8,8 +8,8 @@
 
 Clone the repo:
 ```sh
-git clone git@github.com:kunalkapadia/express-mongoose-es6-rest-api.git
-cd express-mongoose-es6-rest-api
+git clone https://github.com/freeCodeCamp/hackathon-leaderboard.git
+cd hackathon-leaderboard
 ```
 
 Install yarn:
