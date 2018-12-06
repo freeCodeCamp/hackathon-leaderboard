@@ -32,6 +32,25 @@ Start server:
 # Start server
 yarn start
 
+# Testing Web Service locally with localtunnel
+
+You can use [localtunnel](https://localtunnel.github.io/www/) to have a proxy https url for your application when working locally.
+
+This is required for you to be able to test the netlify webhooks and GitHub OAuth login
+
+```sh
+npm install -g localtunnel
+lt --port 4040 --subdomain=a-subdomain-that-you-want
+```
+
+This will proxy your app over at
+
+```sh
+https://a-subdomain-that-you-want.localtunnel.me/
+```
+
+You should now be able to configure this for your GitHub OAuth and recieve webhooks from netlify.
+
 # Selectively set DEBUG env var to get logs
 DEBUG=express-mongoose-es6-rest-api:* yarn start
 ```
@@ -40,7 +59,7 @@ Refer [debug](https://www.npmjs.com/package/debug) to know how to selectively tu
 
 Tests:
 ```sh
-# Run tests written in ES6 
+# Run tests written in ES6
 yarn test
 
 # Run test along with code coverage
@@ -121,7 +140,7 @@ bash bin/development.sh
 ```bash
 # To use this option you need to make sure mongodb is listening on port 27017
 
-# Build docker 
+# Build docker
 docker build -t express-mongoose-es6-rest-api .
 
 # Run docker
