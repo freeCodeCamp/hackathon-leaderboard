@@ -2,7 +2,7 @@
 
 # hackathon-leaderboard
 
-> [freeCodeCamp.org](https://www.freecodecamp.org)'s hackathon projects index for the [2018 JAMstack Hackthon](https://hackathon.freecodecamp.org/).
+> [freeCodeCamp.org](https://www.freecodecamp.org)'s hackathon projects index for the [2018 JAMstack Hackathon](https://hackathon.freecodecamp.org/).
 
 ## Getting Started
 
@@ -50,7 +50,7 @@ This will proxy your app over at
 https://a-subdomain-that-you-want.localtunnel.me/
 ```
 
-You should now be able to configure this for your GitHub OAuth and recieve webhooks from netlify.
+You should now be able to configure this for your GitHub OAuth and receive webhooks from netlify.
 
 # Selectively set DEBUG env var to get logs
 DEBUG=express-mongoose-es6-rest-api:* yarn start
